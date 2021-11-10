@@ -38,9 +38,31 @@ def meet_block(grid, point, direction):
     '''
     If the laser is not currently at the boundary, this function will check
     whether laser interacts with a block and return the new direction of laser
-   
-    '''
-    pass
+    **Parameters**
+        grid : *list, list, string*
+            A list of list stand for a possible solution of the game
+        point: *tuple, int*
+            The current lazor point
+        dirc: *tuple, int*
+            The current direction of lazor
+    **Return**
+        new_dir: *list*
+            a list that includes new directions of lazor
+    '''    
+
+    x1,y1 = point[0], point[1]+direction[1]
+    x2,y2 = point[0]+direction[0], point[1]
+
+    if point[0] & 1 == 1:
+        block_type = grid[y1][x1]
+        block = Block((x1,y1),block_type)
+        new_direction = block.block_dir(point,direction)
+    if point[0] & 1 == 0:
+        block_type = grid[y2][x2]
+        block = Block((x2,y2),block_type)
+        new_direction = block.block_dir(point,direction)
+
+    return new_direction
 
 def inputblock(grid, A_num, B_num, C_num):
     pass
