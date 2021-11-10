@@ -5,16 +5,33 @@ def read_bff(file_name):
 
    
     '''
-   pass
+    pass
 
 class Block:
     def __init__(self, block_cor, type):
         self.block_cor = block_cor
         self.type = type
-
+       
     def block_dir(self, point, direction):
-
-       pass
+        
+        new_direction = []
+        if self.type == 'A':
+            if point[0] & 1 == 0:
+                new_direction = [direction[0] * (-1), direction[1]]
+            else:
+                new_direction = [direction[0], direction[1] * (-1)]
+        elif self.type == 'B':
+            new_direction = []
+        elif self.type == 'C':
+            if point[0] & 1 == 0:
+                new_direction[0] = direction
+                new_direction[1] = [direction[0] * (-1), direction[1]]
+            else:
+                new_direction[0] = direction
+                new_direction[1] = [direction[0], direction[1] * (-1)]
+        elif self.type == 'o' or self.type == 'x':
+            new_direction = direction
+        return new_direction
 
 
 def meet_block(grid, point, direction):
@@ -49,7 +66,7 @@ def solver(grid, init_laz_list, holelist):
     when there are no coordinates in the hole list, the loop ends and return
     the coordinate of each block.
     """
-   pass
+    pass
 
 def get_colors():
     '''
