@@ -9,142 +9,13 @@ def read_bff(file_name):
     '''
     Extract imformation from '.bff' file
 
+<<<<<<< HEAD
     **Parameters**
+=======
+>>>>>>> parent of 9d44617 (Update lazor_project_1.0 .py)
 
-        file_name: *str*
-            The full name of the file which has information to be extracted
-
-    **Return**
-
-        tuple: *list, int, int, int, list, list*
-            Elements in the tuple are as follow:
-                Grid: *list*
-                    The full grid in the form of a coordinate system
-                A: *int*
-                    The number of A-block available
-                B: *int*
-                    The number of B-block available
-                C: *int*
-                    The number of C-block available
-                Lasors: *list*
-                    The first two elements is the positon of the start point, the last two elements are the direction.
-                End point: *list
-                    The positions of the end points
     '''
-    # initialize the parameters
-    content = []  # store the content
-    grid = []
-    grid_origin = []
-    grid_temp = []
-    A_num = 0  # initialize A, B, C, L, P
-    B_num = 0
-    C_num = 0
-    L_list = []
-    P_list = []
-    # open and read the file
-    with open(file_name, 'r') as f:
-        # get all the lines in the file
-        lines = list(f)
-        for i in range(len(lines)):
-            lines[i] = lines[i].strip()
-            content.append(list(lines[i]))
-    # extract useful information
-    for i in range(len(content)):
-        for j in range(len(content[i])):
-            A_temp = []  # set up some temporary lists
-            B_temp = []
-            C_temp = []
-            L_temp = []
-            P_temp = []
-            # Get the number of available A-block
-            if content[i][j] == 'A' and (str.isalpha(content[i][j + 1]) is False):
-                for k in range(len(content[i])):
-                    if str.isdigit(content[i][k]):
-                        A_temp.append(content[i][k])
-                        A_num = int(''.join(A_temp))
-            # Get the number of available B-block
-            if content[i][j] == 'B' and (str.isalpha(content[i][j + 1]) is False):
-                for k in range(len(content[i])):
-                    if str.isdigit(content[i][k]):
-                        B_temp.append(content[i][k])
-                        B_num = int(''.join(B_temp))
-            # Get the number of available C-block
-            if content[i][j] == 'C' and (str.isalpha(content[i][j + 1]) is False):
-                for k in range(len(content[i])):
-                    if str.isdigit(content[i][k]):
-                        C_temp.append(content[i][k])
-                        C_num = int(''.join(C_temp))
-            # Get the positions of the start point and direction of lasors
-            if content[i][j] == 'L' and (str.isalpha(content[i][j + 1]) is False):
-                L_temp = lines[i].strip().split(' ')
-                L_temp.remove('L')
-                L_list.append([int(L_temp[0]), int(L_temp[1]),
-                               int(L_temp[2]), int(L_temp[3])])
-            # Get the positions of the end points
-            if content[i][j] == 'P' and (str.isalpha(content[i][j - 1]) is False):
-                P_temp = lines[i].strip().split(' ')
-                P_temp.remove('P')
-                P_list.append([int(P_temp[0]), int(P_temp[1])])
-
-        # get the raw grid from the file
-        if lines[i] == 'GRID START':
-            grid_start = i + 1
-            while lines[grid_start] != 'GRID STOP':
-                grid_temp.append(content[grid_start])
-                grid_start += 1
-
-    # Remove the spaces of the raw grid
-    for i in range(len(grid_temp)):
-        gridline = [x for x in grid_temp[i] if x != ' ']
-        grid.append(gridline)
-    # Get the original grid which will be used to draw a picture
-    for i in range(len(grid_temp)):
-        gridline = [x for x in grid_temp[i] if x != ' ']
-        grid_origin.append(gridline)
-    # Fulfill the grid with 'x' to get the full grid
-    gridfull = grid.copy()
-    row = len(gridfull)
-    column = len(gridfull[0])
-    insert = ['x'] * (2 * column + 1)
-    for i in range(0, row):
-        for j in range(0, column + 1):
-            gridfull[i].insert(2 * j, 'x')
-    for i in range(0, row + 1):
-        gridfull.insert(2 * i, insert)
-
-    # If unreasonable block number
-    if (A_num + B_num + C_num) == 0:
-        raise Exception('There are no available block ABC')
-    if (A_num + B_num + C_num) >= row * column:
-        raise Exception('There are more blocks than available spaces')
-    # If there are no lasors
-    if len(L_list) == 0:
-        raise Exception('There are no lasors')
-    for i in range(len(L_list)):
-        # If the format of the lasor is incorrect
-        if len(L_list[i]) != 4:
-            raise Exception('The format of the lasor is incorrect')
-    # If the start points of lasors are unreasonable
-        if L_list[i][0] < 0 or L_list[i][0] > column * 2 or L_list[i][1] < 0 or L_list[i][1] > row * 2:
-            raise Exception('The start point of lasors are out of the grid')
-    # If the directions of the lasors are unreasonable
-        if (L_list[i][2] != -1 and L_list[i][2] != 1) or (L_list[i][3] != -1 and L_list[i][3] != 1):
-            raise Exception('The directions of lasors are unreasonable')
-    for i in range(len(P_list)):
-        # If the end points are unreasonable
-        if P_list[i][0] < 0 or P_list[i][0] > column * 2 or P_list[i][1] < 0 or P_list[i][1] > row * 2:
-            raise Exception('The end point of lasors are out of the grid')
-    # If there are no end points
-    if len(P_list) == 0:
-        raise Exception('There are no end points')
-
-    # If there is any element other than 'ABCxo' in grid
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            if grid[i][j] not in ['x', 'o', 'A', 'B', 'C']:
-                raise Exception('There are undefined characters in the grid')
-
-    return gridfull, A_num, B_num, C_num, L_list, P_list, grid_origin
+    pass
 
 
 class Block:
@@ -282,25 +153,14 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
     for ii in range(len(lazorlist)):
         if int(lazorlist[ii][0][1]) % 2 == 1:  # left&right
             x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
-            if x_temp > 0:
-                if gridfull_temp[y_temp][x_temp-1] and gridfull_temp[y_temp][x_temp+1] in ['A', 'B']:
-                    possible_list.remove(list_temp)
-                    return False
-                else:
-                    return True
-            if x_temp == 0:
-                if gridfull_temp[y_temp][x_temp+1] in ['A', 'B']:
-                    possible_list.remove(list_temp)
-                    return False
-                else:
-                    return True
             if x_temp == len(gridfull_temp[0]):
-                if gridfull_temp[y_temp][x_temp-1] in ['A', 'B']:
+                if gridfull_temp[y_temp][x_temp - 1] in ['A', 'B']:
                     possible_list.remove(list_temp)
                     return False
                 else:
                     return True
 
+<<<<<<< HEAD
         if int(lazorlist[ii][0][1]) % 2 == 0:  # up&down
             x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
             if y_temp > 0:
@@ -333,6 +193,8 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             return True
 
 
+=======
+>>>>>>> parent of 9d44617 (Update lazor_project_1.0 .py)
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     """
