@@ -193,8 +193,22 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             return True
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 9d44617 (Update lazor_project_1.0 .py)
+=======
+def grid_generation(grid, list_temp):
+    for i in range(len(list_temp)):
+        k = 0
+        for row in range(0,len(grid),2):
+            for column in range(0,len(grid[row]),2):
+                    print(row,column)
+                    if grid[row][column] == 'o':
+                        grid[row][column] = list_temp[i]
+                        k += 1
+    return grid
+
+>>>>>>> 58383fa8b838573ca38bb99e6af1d7eba991dd90
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     """
@@ -205,6 +219,7 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     hole, then the coordinate of this hole is removed from the hole list
     when there are no coordinates in the hole list, the loop ends and return
     the coordinate of each block.
+
     **Parameters**
     grid:*list,list,string*
         The grid contains a list of lists that can represent the grid.
@@ -214,30 +229,27 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     holelist:*list*
         The holelist contains all the holes' coordinates.
     """
+    result = []
     lazorlist_save = []
     for p in range(len(init_laz_list)):
         lazorlist_save.append([init_laz_list[p]])
         lazorlist = copy.deepcopy(lazorlist_save)
     coordination = (0, 0)
     direction = (0, 0)
-    holelist_copy = copy.deepcopy(holelist)
     possible_list = inputblock(grid, a, b, c)
-    random.shuffle(possible_list)
+    print(len(possible_list))
     # print(lazorlist)
-    n = 0
+    num = 0
     test = True
     # When all the holes are filled, the loop ends, we also added an upper limit to the counter.
     while test:
-        list_temp = random.choice(possible_list)
-        for i in range(len(list_temp)):
-            i = 0
-            gridfull_temp = copy.deepcopy(grid)
-            for row in range(len(gridfull_temp)):
-                for column in range(len(gridfull_temp[row])):
-                    if gridfull_temp[row][column] == 'o':
-                        gridfull_temp[row][column] = list_temp[i]
-                        i += 1
+        L = len(possible_list)
+        ll = np.random.randint(0, L)
+        list_temp = possible_list[ll]
+        # list_temp = random.choice(possible_list)
+        gridfull_temp = grid_generation(grid, list_temp)
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
+            num += 1
             for n in range(30):
                 # The original lazor is added to the lazor list
                 for k in range(len(lazorlist)):
@@ -258,8 +270,8 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                         if len(next_step) == 0:
                             lazorlist[k].append([
                                 coordination[0], coordination[1], 0, 0])
-                            if coordination in holelist_copy:
-                                holelist_copy.remove(coordination)
+                            if (coordination in holelist) and (coordination not in result):
+                                result.append(coordination)
                         # If there are 2 elements, it is "o" or A block
                         elif len(next_step) == 2:
                             direction = next_step
@@ -267,8 +279,8 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                                 coordination[0] + direction[0], coordination[1] + direction[1]]
                             lazorlist[k].append(
                                 [coordination[0], coordination[1], direction[0], direction[1]])
-                            if coordination in holelist_copy:
-                                holelist_copy.remove(coordination)
+                            if (coordination in holelist) and (coordination not in result):
+                                result.append(coordination)
                         # If there are 4 elements, it is C block, we seperate them and add the straight line to a new list in lazor list,
                         # and the other to the list under the original lazor
                         elif len(next_step) == 4:
@@ -282,11 +294,12 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                             lazorlist[k].append(
                                 [coordination_newlaz2[0], coordination_newlaz2[1], direction[2], direction[3]])
                             coordination = coordination_newlaz2
-                            if coordination in holelist_copy:
-                                holelist_copy.remove(coordination)
+                            if (coordination in holelist) and (coordination not in result):
+                                result.append(coordination)
                         else:
                             print('Wrong')
-            if len(holelist_copy) == 0:
+            if len(result) == len(holelist):
+                test = False
                 good_grid = []
                 smallgrid = init_grid
                 good_list = list_temp
@@ -298,12 +311,14 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                             if good_grid[row][column] == 'o':
                                 good_grid[row][column] = good_list[i]
                                 i += 1
+                print(len(possible_list))
+                print(num)
                 return gridfull_temp, lazorlist, list_temp, good_grid
-            elif len(holelist_copy) != 0:
-                holelist_copy = copy.deepcopy(holelist)
+            else:
                 gridfull_temp = copy.deepcopy(grid)
                 lazorlist = copy.deepcopy(lazorlist_save)
                 possible_list.remove(list_temp)
+                result = []
 
 
 def get_colors():
