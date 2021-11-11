@@ -31,11 +31,11 @@ class Block:
             new_direction = []
         elif self.type == 'C':
             if point[0] & 1 == 0:
-                new_direction[0] = direction
-                new_direction[1] = [direction[0] * (-1), direction[1]]
+                new_direction = [direction[0], direction[1],
+                                 direction[0] * (-1), direction[1]]
             else:
-                new_direction[0] = direction
-                new_direction[1] = [direction[0], direction[1] * (-1)]
+                new_direction = [direction[0], direction[1],
+                                 direction[0], direction[1] * (-1)]
         elif self.type == 'o' or self.type == 'x':
             new_direction = direction
         return new_direction
