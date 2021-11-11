@@ -333,6 +333,19 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             return True
 
 
+def grid_generation(grid, list_temp):
+    for i in range(len(list_temp)):
+        i = 0
+        gridfull_temp = copy.deepcopy(grid)
+        for row in range(len(gridfull_temp)):
+            if row % 2 != 0:
+                for column in range(len(gridfull_temp[row])):
+                    if column % 2 != 0:
+                        if gridfull_temp[row][column] == 'o':
+                            gridfull_temp[row][column] = list_temp[i]
+                            i += 1
+    return gridfull_temp
+
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     """
@@ -367,15 +380,11 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     test = True
     # When all the holes are filled, the loop ends, we also added an upper limit to the counter.
     while test:
-        list_temp = random.choice(possible_list)
-        for i in range(len(list_temp)):
-            i = 0
-            gridfull_temp = copy.deepcopy(grid)
-            for row in range(len(gridfull_temp)):
-                for column in range(len(gridfull_temp[row])):
-                    if gridfull_temp[row][column] == 'o':
-                        gridfull_temp[row][column] = list_temp[i]
-                        i += 1
+        L = len(possible_list)
+        ll = np.random.randint(0, L)
+        list_temp = possible_list[ll]
+        # list_temp = random.choice(possible_list)
+        gridfull_temp = grid_generation(grid, list_temp)
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             num += 1
             for n in range(30):
