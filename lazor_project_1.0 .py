@@ -449,7 +449,6 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                 result = []
 
 
-
 def get_colors():
     '''
     Colors map that the lazor board will use:
