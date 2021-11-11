@@ -459,10 +459,5 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
 
 
 if __name__ == "__main__":
+    pass
 
-    grid = [['B', 'o', 'o'], ['A', 'x', 'x'], [
-        'B', 'o', 'A'], ['A', 'x', 'o'], ['B', 'o', 'o']]
-    lazors = [[4, 9, -1, -1], [6, 9, -1, -1]]
-    hole = [[2, 5], [5, 0]]
-
-    print(solver(grid=grid, init_laz_list=lazors, holelist=hole))
