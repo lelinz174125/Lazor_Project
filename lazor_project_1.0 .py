@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
 from sympy.utilities.iterables import multiset_permutations
 import copy
+import numpy as np
 import random
 import time
 
@@ -329,9 +330,9 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 def grid_generation(grid, list_temp):
     for i in range(len(list_temp)):
         k = 0
-        for row in range(0,len(grid),2):
-            for column in range(0,len(grid[row]),2):
-                    print(row,column)
+        for row in range(1,len(grid),2):
+            for column in range(1,len(grid[row]),2):
+                    # print(row,column)
                     if grid[row][column] == 'o':
                         grid[row][column] = list_temp[i]
                         k += 1
