@@ -4,21 +4,23 @@ import copy
 import random
 import time
 
+
 def read_bff(file_name):
     '''
     Extract imformation from '.bff' file
 
-   
+
     '''
     pass
+
 
 class Block:
     def __init__(self, block_cor, type):
         self.block_cor = block_cor
         self.type = type
-       
+
     def block_dir(self, point, direction):
-        
+
         new_direction = []
         if self.type == 'A':
             if point[0] & 1 == 0:
@@ -53,19 +55,19 @@ def meet_block(grid, point, direction):
     **Return**
         new_dir: *list*
             a list that includes new directions of lazor
-    '''    
+    '''
 
-    x1,y1 = point[0], point[1]+direction[1]
-    x2,y2 = point[0]+direction[0], point[1]
+    x1, y1 = point[0], point[1] + direction[1]
+    x2, y2 = point[0] + direction[0], point[1]
 
     if point[0] & 1 == 1:
         block_type = grid[y1][x1]
-        block = Block((x1,y1),block_type)
-        new_direction = block.block_dir(point,direction)
+        block = Block((x1, y1), block_type)
+        new_direction = block.block_dir(point, direction)
     if point[0] & 1 == 0:
         block_type = grid[y2][x2]
-        block = Block((x2,y2),block_type)
-        new_direction = block.block_dir(point,direction)
+        block = Block((x2, y2), block_type)
+        new_direction = block.block_dir(point, direction)
 
     return new_direction
 
@@ -121,14 +123,17 @@ def inputblock(grid, A_num, B_num, C_num):
     return all_Blocks
 
 
-def check(grid, laz_co, direction):
-    """
-    This function is used to check if the lazer and its next step
-    is inside the grid, if it is not, return to the last step.
-
-   
-    """
-    pass
+def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
+    # any lazor is surrounded
+    for ii in range(len(lazorlist)):
+        if int(lazorlist[ii][0][1]) % 2 == 1:  # left&right
+            x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
+            if x_temp == len(gridfull_temp[0]):
+                if gridfull_temp[y_temp][x_temp - 1] in ['A', 'B']:
+                    possible_list.remove(list_temp)
+                    return False
+                else:
+                    return True
 
 
 def solver(grid, init_laz_list, holelist):
@@ -142,6 +147,7 @@ def solver(grid, init_laz_list, holelist):
     the coordinate of each block.
     """
     pass
+
 
 def get_colors():
     '''
@@ -167,6 +173,7 @@ def get_colors():
         'o': (100, 100, 100),
         'x': (50, 50, 50),
     }
+
 
 def save_board(unsolved_board, lazors_info, holes, filename, blockSize=100):
             #   (unsolved_board, solved_board, filename,
@@ -253,7 +260,6 @@ def save_board(unsolved_board, lazors_info, holes, filename, blockSize=100):
         img_new.ellipse([holes[i][0] * blockSize / 2 - 10, holes[i][1] * blockSize / 2 - 10,
                          holes[i][0] * blockSize / 2 + 10, holes[i][1] * blockSize / 2 + 10], fill=(255, 255, 255), outline="red", width=2)
 
-
     if not filename.endswith(".png"):
         filename += ".png"
 
@@ -285,7 +291,6 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
     dimx = nBlocksx * blockSize
     dimy = nBlocksy * blockSize
     colors = get_colors()
-
 
     # Verify that all values in the board are valid colors.
     ERR_MSG = "Error, invalid board value found!"
@@ -329,16 +334,18 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
                          lazor_pos[0] * blockSize / 2 + 10, lazor_pos[1] * blockSize / 2 + 10], fill=(255, 0, 0))
 
         for i in answer_lazor:
-            end = [i[-1][0],i[-1][1]]
+            end = [i[-1][0], i[-1][1]]
             while end not in holes:
                 i.pop()
-                end = [i[-1][0],i[-1][1]]
+                end = [i[-1][0], i[-1][1]]
 
         for i in answer_lazor:
             for point in range(len(i)):
-                co_start = (i[point][0]* blockSize / 2,i[point][1]* blockSize / 2)
-                if point+1 < len(i):
-                    co_end = (i[point+1][0]* blockSize / 2,i[point+1][1]* blockSize / 2)
+                co_start = (i[point][0] * blockSize / 2,
+                            i[point][1] * blockSize / 2)
+                if point + 1 < len(i):
+                    co_end = (i[point + 1][0] * blockSize / 2,
+                              i[point + 1][1] * blockSize / 2)
                 else:
                     co_end = co_start
                 img_new = ImageDraw.Draw(img)
@@ -354,12 +361,11 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
     img.save("%s" % filename)
 
 
-
 if __name__ == "__main__":
 
     grid = [['B', 'o', 'o'], ['A', 'x', 'x'], [
         'B', 'o', 'A'], ['A', 'x', 'o'], ['B', 'o', 'o']]
     lazors = [[4, 9, -1, -1], [6, 9, -1, -1]]
     hole = [[2, 5], [5, 0]]
-    
+
     print(solver(grid=grid, init_laz_list=lazors, holelist=hole))
