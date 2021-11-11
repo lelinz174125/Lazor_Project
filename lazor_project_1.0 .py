@@ -9,13 +9,142 @@ def read_bff(file_name):
     '''
     Extract imformation from '.bff' file
 
-<<<<<<< HEAD
     **Parameters**
-=======
->>>>>>> parent of 9d44617 (Update lazor_project_1.0 .py)
 
+        file_name: *str*
+            The full name of the file which has information to be extracted
+
+    **Return**
+ 
+        tuple: *list, int, int, int, list, list*
+            Elements in the tuple are as follow:
+                Grid: *list*
+                    The full grid in the form of a coordinate system
+                A: *int*
+                    The number of A-block available
+                B: *int*
+                    The number of B-block available
+                C: *int*
+                    The number of C-block available
+                Lasors: *list*
+                    The first two elements is the positon of the start point, the last two elements are the direction.
+                End point: *list
+                    The positions of the end points
     '''
-    pass
+    # initialize the parameters
+    content = []  # store the content
+    grid = []
+    grid_origin = []
+    grid_temp = []
+    A_num = 0  # initialize A, B, C, L, P
+    B_num = 0
+    C_num = 0
+    L_list = []
+    P_list = []
+    # open and read the file
+    with open(file_name, 'r') as f:
+        # get all the lines in the file
+        lines = list(f)
+        for i in range(len(lines)):
+            lines[i] = lines[i].strip()
+            content.append(list(lines[i]))
+    # extract useful information
+    for i in range(len(content)):
+        for j in range(len(content[i])):
+            A_temp = []  # set up some temporary lists
+            B_temp = []
+            C_temp = []
+            L_temp = []
+            P_temp = []
+            # Get the number of available A-block
+            if content[i][j] == 'A' and (str.isalpha(content[i][j + 1]) is False):
+                for k in range(len(content[i])):
+                    if str.isdigit(content[i][k]):
+                        A_temp.append(content[i][k])
+                        A_num = int(''.join(A_temp))
+            # Get the number of available B-block
+            if content[i][j] == 'B' and (str.isalpha(content[i][j + 1]) is False):
+                for k in range(len(content[i])):
+                    if str.isdigit(content[i][k]):
+                        B_temp.append(content[i][k])
+                        B_num = int(''.join(B_temp))
+            # Get the number of available C-block
+            if content[i][j] == 'C' and (str.isalpha(content[i][j + 1]) is False):
+                for k in range(len(content[i])):
+                    if str.isdigit(content[i][k]):
+                        C_temp.append(content[i][k])
+                        C_num = int(''.join(C_temp))
+            # Get the positions of the start point and direction of lasors
+            if content[i][j] == 'L' and (str.isalpha(content[i][j + 1]) is False):
+                L_temp = lines[i].strip().split(' ')
+                L_temp.remove('L')
+                L_list.append([int(L_temp[0]), int(L_temp[1]),
+                               int(L_temp[2]), int(L_temp[3])])
+            # Get the positions of the end points
+            if content[i][j] == 'P' and (str.isalpha(content[i][j - 1]) is False):
+                P_temp = lines[i].strip().split(' ')
+                P_temp.remove('P')
+                P_list.append([int(P_temp[0]), int(P_temp[1])])
+
+        # get the raw grid from the file
+        if lines[i] == 'GRID START':
+            grid_start = i + 1
+            while lines[grid_start] != 'GRID STOP':
+                grid_temp.append(content[grid_start])
+                grid_start += 1
+
+    # Remove the spaces of the raw grid
+    for i in range(len(grid_temp)):
+        gridline = [x for x in grid_temp[i] if x != ' ']
+        grid.append(gridline)
+    # Get the original grid which will be used to draw a picture
+    for i in range(len(grid_temp)):
+        gridline = [x for x in grid_temp[i] if x != ' ']
+        grid_origin.append(gridline)
+    # Fulfill the grid with 'x' to get the full grid
+    gridfull = grid.copy()
+    row = len(gridfull)
+    column = len(gridfull[0])
+    insert = ['x'] * (2 * column + 1)
+    for i in range(0, row):
+        for j in range(0, column + 1):
+            gridfull[i].insert(2 * j, 'x')
+    for i in range(0, row + 1):
+        gridfull.insert(2 * i, insert)
+
+    # If unreasonable block number
+    if (A_num + B_num + C_num) == 0:
+        raise Exception('There are no available block ABC')
+    if (A_num + B_num + C_num) >= row * column:
+        raise Exception('There are more blocks than available spaces')
+    # If there are no lasors
+    if len(L_list) == 0:
+        raise Exception('There are no lasors')
+    for i in range(len(L_list)):
+        # If the format of the lasor is incorrect
+        if len(L_list[i]) != 4:
+            raise Exception('The format of the lasor is incorrect')
+    # If the start points of lasors are unreasonable
+        if L_list[i][0] < 0 or L_list[i][0] > column * 2 or L_list[i][1] < 0 or L_list[i][1] > row * 2:
+            raise Exception('The start point of lasors are out of the grid')
+    # If the directions of the lasors are unreasonable
+        if (L_list[i][2] != -1 and L_list[i][2] != 1) or (L_list[i][3] != -1 and L_list[i][3] != 1):
+            raise Exception('The directions of lasors are unreasonable')
+    for i in range(len(P_list)):
+        # If the end points are unreasonable
+        if P_list[i][0] < 0 or P_list[i][0] > column * 2 or P_list[i][1] < 0 or P_list[i][1] > row * 2:
+            raise Exception('The end point of lasors are out of the grid')
+    # If there are no end points
+    if len(P_list) == 0:
+        raise Exception('There are no end points')
+
+    # If there is any element other than 'ABCxo' in grid
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if grid[i][j] not in ['x', 'o', 'A', 'B', 'C']:
+                raise Exception('There are undefined characters in the grid')
+
+    return gridfull, A_num, B_num, C_num, L_list, P_list, grid_origin
 
 
 class Block:
@@ -531,6 +660,281 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
         filename += "_solved.png"
 
     img.save("%s" % filename)
+
+def unit_test():
+    # mad_1.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o']]
+    A_blocks = 2
+    B_blocks = 0
+    C_blocks = 1
+    lazorlist = [[2, 7, 1, -1]]
+    holelist = [[3, 0], [4, 3], [2, 5], [4, 7]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'C', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('mad_1.bff') == (fullgrid, A_blocks,
+                                     B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # mad_4.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o']]
+    A_blocks = 5
+    B_blocks = 0
+    C_blocks = 0
+    lazorlist = [[7, 2, -1, 1]]
+    holelist = [[3, 4], [7, 4], [5, 8]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'A', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'A', 'x', 'o', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'A', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('mad_4.bff') == (fullgrid, A_blocks,
+                                     B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # mad_7.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'x', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['o', 'o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o', 'x'],
+            ['o', 'o', 'o', 'o', 'o'],
+            ['o', 'o', 'o', 'o', 'o']]
+    A_blocks = 6
+    B_blocks = 0
+    C_blocks = 0
+    lazorlist = [[2, 1, 1, 1], [9, 4, -1, 1]]
+    holelist = [[6, 3], [6, 5], [6, 7], [2, 9], [9, 6]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'A', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'A', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'o', 'x', 'A', 'x', 'o', 'x', 'x', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'A', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'A', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('mad_7.bff') == (fullgrid, A_blocks,
+                                     B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # numbered_6.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'x', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['o', 'o', 'o'],
+            ['o', 'x', 'x'],
+            ['o', 'o', 'o'],
+            ['o', 'x', 'o'],
+            ['o', 'o', 'o']]
+    A_blocks = 3
+    B_blocks = 3
+    C_blocks = 0
+    lazorlist = [[4, 9, -1, -1], [6, 9, -1, -1]]
+    holelist = [[2, 5], [5, 0]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'o', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'x', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('numbered_6.bff') == (fullgrid, A_blocks,
+                                          B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # dark_1.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'x', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'x', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['x', 'o', 'o'],
+            ['o', 'o', 'o'],
+            ['o', 'o', 'x']]
+    A_blocks = 0
+    B_blocks = 3
+    C_blocks = 0
+    lazorlist = [[3, 0, -1, 1], [1, 6, 1, -1], [3, 6, -1, -1], [4, 3, 1, -1]]
+    holelist = [[0, 3], [6, 1]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'x', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'B', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'B', 'x', 'x', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('dark_1.bff') == (fullgrid, A_blocks,
+                                      B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # showstopper_4.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'B', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['B', 'o', 'o'],
+            ['o', 'o', 'o'],
+            ['o', 'o', 'o']]
+    A_blocks = 3
+    B_blocks = 3
+    C_blocks = 0
+    lazorlist = [[3, 6, -1, -1]]
+    holelist = [[2, 3]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'A', 'x', 'B', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'o', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'o', 'x', 'B', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('showstopper_4.bff') == (fullgrid, A_blocks,
+                                             B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # tiny_5.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'B', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['o', 'B', 'o'],
+            ['o', 'o', 'o'],
+            ['o', 'o', 'o']]
+    A_blocks = 3
+    B_blocks = 0
+    C_blocks = 1
+    lazorlist = [[4, 5, -1, -1]]
+    holelist = [[1, 2], [6, 3]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'B', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'C', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('tiny_5.bff') == (fullgrid, A_blocks,
+                                      B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
+
+    # yarn_5.bff
+    fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'B', 'x', 'x', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'x', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'x', 'x', 'o', 'x', 'o', 'x', 'x', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'o', 'x', 'o', 'x', 'x', 'x', 'x', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                ['x', 'B', 'x', 'o', 'x', 'x', 'x', 'o', 'x', 'o', 'x'],
+                ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    grid = [['o', 'B', 'x', 'o', 'o'],
+            ['o', 'o', 'o', 'o', 'o'],
+            ['o', 'x', 'o', 'o', 'o'],
+            ['o', 'x', 'o', 'o', 'x'],
+            ['o', 'o', 'x', 'x', 'o'],
+            ['B', 'o', 'x', 'o', 'o']]
+    A_blocks = 8
+    B_blocks = 0
+    C_blocks = 0
+    lazorlist = [[4, 1, 1, 1]]
+    holelist = [[6, 9], [9, 2]]
+    solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'B', 'x', 'x', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'A', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'x', 'x', 'o', 'x', 'o', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'o', 'x', 'x', 'x', 'A', 'x', 'o', 'x', 'x', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'A', 'x', 'o', 'x', 'x', 'x', 'x', 'x', 'A', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+                   ['x', 'B', 'x', 'A', 'x', 'x', 'x', 'A', 'x', 'o', 'x'],
+                   ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
+    assert read_bff('yarn_5.bff') == (fullgrid, A_blocks,
+                                      B_blocks, C_blocks, lazorlist, holelist, grid)
+    assert solver(fullgrid, lazorlist, holelist, A_blocks,
+                  B_blocks, C_blocks, grid)[0] == solved_grid
 
 
 if __name__ == "__main__":
