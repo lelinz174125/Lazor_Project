@@ -335,16 +335,14 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 
 def grid_generation(grid, list_temp):
     for i in range(len(list_temp)):
-        i = 0
-        gridfull_temp = copy.deepcopy(grid)
-        for row in range(len(gridfull_temp)):
-            if row % 2 != 0:
-                for column in range(len(gridfull_temp[row])):
-                    if column % 2 != 0:
-                        if gridfull_temp[row][column] == 'o':
-                            gridfull_temp[row][column] = list_temp[i]
-                            i += 1
-    return gridfull_temp
+        k = 0
+        for row in range(0,len(grid),2):
+            for column in range(0,len(grid[row]),2):
+                    print(row,column)
+                    if grid[row][column] == 'o':
+                        grid[row][column] = list_temp[i]
+                        k += 1
+    return grid
 
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
