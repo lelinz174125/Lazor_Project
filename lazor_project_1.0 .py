@@ -9,7 +9,7 @@ def read_bff(file_name):
     '''
     Extract imformation from '.bff' file
 
-    **Rarameters**
+    **Parameters**
 
         file_name: *str*
             The full name of the file which has information to be extracted
@@ -257,6 +257,27 @@ def inputblock(grid, A_num, B_num, C_num):
 
 
 def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
+    '''
+    This function can skip some obviously wrong grid
+
+    **Parameters**
+        
+        lazorlist: *list*
+            The list contains all the lasers. 
+        
+        gridfull_temp: *list*
+            The grid about to be solved
+
+        possible_list: *list
+            All possible permutations of 'ABCo'.
+
+        list_temp: *list*
+            The permutation currently being used.
+    
+        holelist: *list*
+            The positions of the end points
+    '''
+    
     # any lazor is surrounded
     for ii in range(len(lazorlist)):
         if int(lazorlist[ii][0][1]) % 2 == 1:  # left&right
@@ -300,6 +321,17 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                     return False
                 else:
                     return True
+    
+    for jj in range(len(holelist)):
+        x_hole = holelist[jj][1]
+        y_hole = holelist[jj][0]
+        if ((gridfull_temp[x_hole][y_hole + 1] in ['A', 'B']) and (gridfull_temp[x_hole][y_hole - 1] in ['A', 'B'])) or \
+                ((gridfull_temp[x_hole + 1][y_hole] in ['A', 'B']) and (gridfull_temp[x_hole - 1][y_hole] in ['A', 'B'])):
+            possible_list.remove(list_temp)
+            return False
+        else:
+            return True
+
 
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
