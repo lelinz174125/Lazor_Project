@@ -933,7 +933,7 @@ def unit_test():
 
 
 if __name__ == "__main__":
-    read = read_bff('mad_7.bff')
+    read = read_bff('mad_1.bff')
     grid = read[0]
     a = read[1]
     b = read[2]
