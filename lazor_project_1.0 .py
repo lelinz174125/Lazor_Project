@@ -16,7 +16,7 @@ def read_bff(file_name):
             The full name of the file which has information to be extracted
 
     **Return**
- 
+
         tuple: *list, int, int, int, list, list*
             Elements in the tuple are as follow:
                 Grid: *list*
@@ -262,10 +262,10 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
     This function can skip some obviously wrong grid
 
     **Parameters**
-        
+
         lazorlist: *list*
             The list contains all the lasers. 
-        
+
         gridfull_temp: *list*
             The grid about to be solved
 
@@ -274,11 +274,11 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 
         list_temp: *list*
             The permutation currently being used.
-    
+
         holelist: *list*
             The positions of the end points
     '''
-    
+
     # any lazor is surrounded
     for ii in range(len(lazorlist)):
         if int(lazorlist[ii][0][1]) % 2 == 1:  # left&right
@@ -290,28 +290,26 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                 else:
                     return True
 
-<<<<<<< HEAD
         if int(lazorlist[ii][0][1]) % 2 == 0:  # up&down
             x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
             if y_temp > 0:
-                if gridfull_temp[y_temp-1][x_temp] and gridfull_temp[y_temp+1][x_temp] in ['A', 'B']:
+                if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
                     possible_list.remove()
                     return False
                 else:
                     return True
             if y_temp == 0:
-                if gridfull_temp[y_temp+1][x_temp] in ['A', 'B']:
+                if gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
                     possible_list.remove()
                     return False
                 else:
                     return True
             if y_temp == len(gridfull_temp):
-                if gridfull_temp[y_temp-1][x_temp] in ['A', 'B']:
+                if gridfull_temp[y_temp - 1][x_temp] in ['A', 'B']:
                     possible_list.remove()
                     return False
                 else:
                     return True
-    
     for jj in range(len(holelist)):
         x_hole = holelist[jj][1]
         y_hole = holelist[jj][0]
@@ -323,22 +321,17 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             return True
 
 
-<<<<<<< HEAD
-=======
->>>>>>> parent of 9d44617 (Update lazor_project_1.0 .py)
-=======
 def grid_generation(grid, list_temp):
     for i in range(len(list_temp)):
         k = 0
-        for row in range(1,len(grid),2):
-            for column in range(1,len(grid[row]),2):
+        for row in range(1, len(grid), 2):
+            for column in range(1, len(grid[row]), 2):
                     # print(row,column)
-                    if grid[row][column] == 'o':
-                        grid[row][column] = list_temp[i]
-                        k += 1
+                if grid[row][column] == 'o':
+                    grid[row][column] = list_temp[i]
+                    k += 1
     return grid
 
->>>>>>> 58383fa8b838573ca38bb99e6af1d7eba991dd90
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     """
@@ -662,6 +655,7 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
 
     img.save("%s" % filename)
 
+
 def unit_test():
     # mad_1.bff
     fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
@@ -961,4 +955,3 @@ if __name__ == "__main__":
                holes=holelist, filename='numbered_6')
     save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
                       holes=holelist, filename='numbered_6')
-
