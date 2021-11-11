@@ -219,7 +219,6 @@ def check(grid, laz_co, direction):
     **Returns**
     True if the lazer is still in the grid
     """
-    
     width = len(grid[0])
     length = len(grid)
     x = laz_co[0]
