@@ -69,8 +69,40 @@ def meet_block(grid, point, direction):
 
     return new_direction
 
+
+def check(grid, laz_co, direction):
+    """
+    This function is used to check if the lazor and its next step
+    is inside the grid, if it is not, return to the last step.
+    **Parameters:**
+    grid:*list,list,string*
+        The grid contains a list of lists that can represent the grid
+    laz_co:*tuple*
+        Contains the current coordinate of the lazer point
+    direction:*list*
+        Contains the direction of the newest lazer
+    **Returns**
+    True if the lazer is still in the grid
+    """
+    width = len(grid[0])
+    length = len(grid)
+    x = laz_co[0]
+    y = laz_co[1]
+    # print('width=' + str(width), length)
+    # print('x=' + str(laz_co[0]), laz_co[1])
+    if x < 0 or x > (width - 1) or \
+        y < 0 or y > (length - 1) or \
+        (x + direction[0]) < 0 or \
+        (x + direction[0]) > (width - 1) or \
+        (y + direction[1]) < 0 or \
+            (y + direction[1]) > (length - 1):
+        return True
+    else:
+        return False
+
+
 def inputblock(grid, A_num, B_num, C_num):
-    
+
     Blocks = []
     for a in grid:
         for b in a:
