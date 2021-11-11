@@ -625,10 +625,26 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
 
 
 if __name__ == "__main__":
+    read = read_bff('mad_7.bff')
+    grid = read[0]
+    a = read[1]
+    b = read[2]
+    c = read[3]
+    lazorlist = read[4]
+    holelist = read[5]
+    smallgrid = read[6]
+    all_pos = inputblock(grid, a, b, c)
+    t0 = time.time()
+    answer = solver(grid=grid, init_laz_list=lazorlist,
+                    holelist=holelist, a=a, b=b, c=c, init_grid=smallgrid)
+    solved_grid = answer[0]
+    solved_lazor = answer[1]
+    solved_list = answer[2]
+    small_solved_grid = answer[3]
+    t1 = time.time()
+    print (t1 - t0)
+    save_board(unsolved_board=smallgrid, lazors_info=lazorlist,
+               holes=holelist, filename='numbered_6')
+    save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
+                      holes=holelist, filename='numbered_6')
 
-    grid = [['B', 'o', 'o'], ['A', 'x', 'x'], [
-        'B', 'o', 'A'], ['A', 'x', 'o'], ['B', 'o', 'o']]
-    lazors = [[4, 9, -1, -1], [6, 9, -1, -1]]
-    hole = [[2, 5], [5, 0]]
-
-    print(solver(grid=grid, init_laz_list=lazors, holelist=hole))
