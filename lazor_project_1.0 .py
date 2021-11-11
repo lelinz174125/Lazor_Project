@@ -1,3 +1,8 @@
+from PIL import Image, ImageDraw
+from sympy.utilities.iterables import multiset_permutations
+import copy
+import random
+import time
 
 def read_bff(file_name):
     '''
@@ -65,7 +70,23 @@ def meet_block(grid, point, direction):
     return new_direction
 
 def inputblock(grid, A_num, B_num, C_num):
-    pass
+    
+    Blocks = []
+    for a in grid:
+        for b in a:
+            if b == 'o':
+                Blocks.append(b)
+    # print(Blocks)
+    for i in range(A_num):
+        Blocks[i] = 'A'
+        # print(Blocks)
+    for i in range(A_num, (A_num + B_num)):
+        Blocks[i] = 'B'
+        # print(Blocks)
+    for i in range((A_num + B_num), (A_num + B_num + C_num)):
+        Blocks[i] = 'C'
+    all_Blocks = [''.join(i) for i in multiset_permutations(Blocks)]
+    return all_Blocks
 
 
 def check(grid, laz_co, direction):
