@@ -179,18 +179,18 @@ def meet_block(grid, point, direction):
     '''
     If the laser is not currently at the boundary, this function will check
     whether laser interacts with a block and return the new direction of laser
-    
+
     **Parameters**
-        
+
         grid : *list, list, string*
             A list of list stand for a possible solution of the game
         point: *tuple, int*
             The current lazor point
         dirc: *tuple, int*
             The current direction of lazor
-    
+
     **Return**
-        
+
         new_dir: *list*
             a list that includes new directions of lazor
     '''
@@ -214,18 +214,18 @@ def check(grid, laz_co, direction):
     """
     This function is used to check if the lazor and its next step
     is inside the grid, if it is not, return to the last step.
-    
+
     **Parameters:**
-        
+
         grid:*list,list,string*
             The grid contains a list of lists that can represent the grid
         laz_co:*tuple*
             Contains the current coordinate of the lazer point
         direction:*list*
             Contains the direction of the newest lazer
-    
+
     **Returns**
-    
+
         True if the lazer is still in the grid
     """
     width = len(grid[0])
@@ -285,9 +285,9 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 
         holelist: *list*
             The positions of the end points
-    
+
     **Return**
-        
+
         None
     '''
 
@@ -349,12 +349,12 @@ def grid_generation(grid, list_temp):
         grid: *list*
             The grid with blocks filled in
     '''
-    
+
     for i in range(len(list_temp)):
         k = 0
         for row in range(1, len(grid), 2):
             for column in range(1, len(grid[row]), 2):
-                    # print(row,column)
+                # print(row,column)
                 if grid[row][column] == 'o':
                     grid[row][column] = list_temp[i]
                     k += 1
@@ -372,7 +372,7 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     the coordinate of each block.
 
     **Parameters**
-    
+
         grid: *list*
             The grid contains a list of lists that can represent the grid.
         init_laz_list: *list*
@@ -390,7 +390,7 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
             The correct arrangement of blocks
         good_grid: *list*
             The grid in oringinal format
-        
+
     '''
     result = []
     lazorlist_save = []
@@ -511,15 +511,15 @@ def get_colors():
 
 
 def save_board(unsolved_board, lazors_info, holes, filename, blockSize=100):
-            #   (unsolved_board, solved_board, filename,
-            #   lazors_pos, holes, stack_lazors, blockSize=100)
+    #   (unsolved_board, solved_board, filename,
+    #   lazors_pos, holes, stack_lazors, blockSize=100)
     '''
     This function is to save the unsolved and solved board.
     "filename_board.png" and "filename_solved.png"
     The idea of the code come from the maze lab of the software carpentry class.
-    
+
     ** Parameters **
-        
+
         unsolved_board: *list*
             The unsolved grid 
         solved_board: *list
@@ -534,9 +534,9 @@ def save_board(unsolved_board, lazors_info, holes, filename, blockSize=100):
             Consisting of the lazor path for each lazor
         blocksize: *int*
             Size of the block of the board
-    
+
     **Return**
-    
+
             None
     '''
 
@@ -612,15 +612,15 @@ def save_board(unsolved_board, lazors_info, holes, filename, blockSize=100):
 
 
 def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, blockSize=100):
-            #   (unsolved_board, solved_board, filename,
-            #   lazors_pos, holes, stack_lazors, blockSize=100)
+    #   (unsolved_board, solved_board, filename,
+    #   lazors_pos, holes, stack_lazors, blockSize=100)
     '''
     This function is to save the unsolved and solved board.
     "filename_board.png" and "filename_solved.png"
     The idea of the code come from the maze lab of the software carpentry class.
-    
+
     **Parameters**
-        
+
         solved_board: *list*
             The solved grid
         answer_lazor: *list*
@@ -635,9 +635,9 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
             Consisting of the lazor path for each lazor
         blocksize: *int*
             Size of the blocks of the board
-    
+
     ** Returns **
-        
+
         None
     '''
 
@@ -1010,7 +1010,7 @@ if __name__ == "__main__":
     solved_list = answer[2]
     small_solved_grid = answer[3]
     t1 = time.time()
-    print (t1 - t0)
+    print(t1 - t0)
     save_board(unsolved_board=smallgrid, lazors_info=lazorlist,
                holes=holelist, filename='numbered_6')
     save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
