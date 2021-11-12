@@ -39,6 +39,7 @@ After running, you can get two picture named as 'yarn_5.png' and 'yarn_5_solved.
 
 ## Contributors
 This prohect exists thankls to all the people who contribure.
+
 Mingze Zheng: mzheng15@jhu.edu, mzheng15
 
 Bo Chao: bchao4@jhu.edu, bchao4
