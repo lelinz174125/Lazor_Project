@@ -22,12 +22,12 @@ P 3 4
 P 7 4
 P 5 8
 ```
-The grid should be placed between **GRID STAR** and **GRID STOP**.
-**A**: Reflect block.
-**B**: Opaque block.
-**C**: Refract block.
-**L**: The first two numbers stand for the laser's start coordinates, the last two numbers stand for the laser's direction.
-**P**: The positions that lazers need to intersect.
+The grid should be placed between **GRID STAR** and **GRID STOP**.  
+**A**: Reflect block.  
+**B**: Opaque block.  
+**C**: Refract block.  
+**L**: The first two numbers stand for the laser's start coordinates, the last two numbers stand for the laser's direction.  
+**P**: The positions that lazers need to intersect.  
 
 ## How can this script help you solve the puzzle?
 Here, we take 'yarn_5' for example. The snapshot of this level is 
@@ -38,10 +38,7 @@ After running, you can get two picture named as 'yarn_5.png' and 'yarn_5_solved.
 <img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_solved.png>
 
 ## Contributors
-This prohect exists thankls to all the people who contribure.
-
-Mingze Zheng: mzheng15@jhu.edu, mzheng15
-
-Bo Chao: bchao4@jhu.edu, bchao4
-
+This prohect exists thankls to all the people who contribure.  
+Mingze Zheng: mzheng15@jhu.edu, mzheng15  
+Bo Chao: bchao4@jhu.edu, bchao4  
 Lelin Zhong: lzhong6@jhu.edu, lzhong6
