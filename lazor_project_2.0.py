@@ -385,12 +385,7 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
         # list_temp = possible_list[ll]
 
         list_temp = random.choice(possible_list)
-        gridfull_temp = grid_generation(grid, list_temp)
-        print(gridfull_temp)
-        # print(possible_list)
-        print(list_temp)
-        print(lazorlist)
-        print(holelist)
+        gridfull_temp, list_temp = grid_generation(grid, list_temp)
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             num += 1
             for n in range(30):
@@ -445,16 +440,14 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                 test = False
                 good_grid = []
                 smallgrid = init_grid
-                print(list_temp)
-                for i in good_list:
-                    print(i)
-                    good_grid = copy.deepcopy(smallgrid)
-                    for row in range(len(good_grid)):
-                        for column in range(len(good_grid[row])):
-                            if good_grid[row][column] == 'o':
-                                good_grid[row][column] = i
-                # print(len(possible_list))
-                # print(num)
+                good_list = copy.deepcopy(list_temp)
+                good_grid = copy.deepcopy(smallgrid)
+                for row in range(len(good_grid)):
+                    for column in range(len(good_grid[0])):
+                        if good_grid[row][column] == 'o':
+                            good_grid[row][column] = good_list.pop(0)
+                print(len(possible_list))
+                print(num)
                 return gridfull_temp, lazorlist, list_temp, good_grid
             else:
                 gridfull_temp = copy.deepcopy(grid)
@@ -973,7 +966,7 @@ if __name__ == "__main__":
     # print(small_solved_grid)
     t1 = time.time()
     print (t1 - t0)
-    # save_board(unsolved_board=smallgrid, lazors_info=lazorlist,
-    #            holes=holelist, filename='dark_1')
-    # save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
-    #                   holes=holelist, filename='dark_1')
+    save_board(unsolved_board=smallgrid, lazors_info=lazorlist,
+               holes=holelist, filename='numbered_6')
+    save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
+                      holes=holelist, filename='numbered_6')
