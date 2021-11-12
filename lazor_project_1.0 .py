@@ -294,19 +294,19 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
             if y_temp > 0:
                 if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
-                    possible_list.remove(list_temp)
+                    possible_list.remove()
                     return False
                 else:
                     return True
             if y_temp == 0:
                 if gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
-                    possible_list.remove(list_temp)
+                    possible_list.remove()
                     return False
                 else:
                     return True
             if y_temp == len(gridfull_temp):
                 if gridfull_temp[y_temp - 1][x_temp] in ['A', 'B']:
-                    possible_list.remove(list_temp)
+                    possible_list.remove()
                     return False
                 else:
                     return True
@@ -368,10 +368,10 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     test = True
     # When all the holes are filled, the loop ends, we also added an upper limit to the counter.
     while test:
-        # L = len(possible_list)
-        # ll = np.random.randint(0, L)
-        # list_temp = possible_list[ll]
-        list_temp = random.choice(possible_list)
+        L = len(possible_list)
+        ll = np.random.randint(0, L)
+        list_temp = possible_list[ll]
+        # list_temp = random.choice(possible_list)
         gridfull_temp = grid_generation(grid, list_temp)
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             num += 1
@@ -935,7 +935,7 @@ def unit_test():
 
 
 if __name__ == "__main__":
-    read = read_bff('mad_7.bff')
+    read = read_bff('mad_1.bff')
     grid = read[0]
     a = read[1]
     b = read[2]
