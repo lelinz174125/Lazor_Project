@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw
 from sympy.utilities.iterables import multiset_permutations
 import copy
-import numpy as np
 import random
 import time
 
