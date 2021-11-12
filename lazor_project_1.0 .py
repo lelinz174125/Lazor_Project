@@ -154,7 +154,22 @@ class Block:
         self.type = type
 
     def block_dir(self, point, direction):
+        '''
+            Identify the function of block
 
+            **Parameters**
+
+                block_cor: *int tuple*
+                    represent for the coordinates of block
+                type: *str* = A, B, C, x, o
+                    represent for the types of block
+
+            **Return**
+
+                new_direction: *list, int*
+                    represent the direction of lazor, when they meet a block
+
+        '''
         new_direction = []
         if self.type == 'A':
             if point[0] & 1 == 0:
@@ -245,7 +260,23 @@ def check(grid, laz_co, direction):
 
 def inputblock(grid, A_num, B_num, C_num):
     '''
+    Fill the blocks into the grid
 
+    **Parameters**
+
+        grid: *list*
+            The full grid
+        A_num: *int*
+            The number of A-block available
+        B_num: *int*
+            The number of B-block available
+        C_num: *int*
+            The number of C-block available
+    
+    **Return**
+
+        all_Blocks: *list*
+            All possible blocks arrangements
     '''
     Blocks = []
     for a in grid:
