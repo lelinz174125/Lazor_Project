@@ -211,7 +211,7 @@ def meet_block(grid, point, direction):
 
 
 def check(grid, laz_co, direction):
-    """
+    '''
     This function is used to check if the lazor and its next step
     is inside the grid, if it is not, return to the last step.
 
@@ -227,13 +227,11 @@ def check(grid, laz_co, direction):
     **Returns**
 
         True if the lazer is still in the grid
-    """
+    '''
     width = len(grid[0])
     length = len(grid)
     x = laz_co[0]
     y = laz_co[1]
-    # print('width=' + str(width), length)
-    # print('x=' + str(laz_co[0]), laz_co[1])
     if x < 0 or x > (width - 1) or \
         y < 0 or y > (length - 1) or \
         (x + direction[0]) < 0 or \
@@ -246,19 +244,18 @@ def check(grid, laz_co, direction):
 
 
 def inputblock(grid, A_num, B_num, C_num):
+    '''
 
+    '''
     Blocks = []
     for a in grid:
         for b in a:
             if b == 'o':
                 Blocks.append(b)
-    # print(Blocks)
     for i in range(A_num):
         Blocks[i] = 'A'
-        # print(Blocks)
     for i in range(A_num, (A_num + B_num)):
         Blocks[i] = 'B'
-        # print(Blocks)
     for i in range((A_num + B_num), (A_num + B_num + C_num)):
         Blocks[i] = 'C'
     all_Blocks = [''.join(i) for i in multiset_permutations(Blocks)]
@@ -354,7 +351,6 @@ def grid_generation(grid, list_temp):
         k = 0
         for row in range(1, len(grid), 2):
             for column in range(1, len(grid[row]), 2):
-                # print(row,column)
                 if grid[row][column] == 'o':
                     grid[row][column] = list_temp[i]
                     k += 1
@@ -406,9 +402,6 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     test = True
     # When all the holes are filled, the loop ends, we also added an upper limit to the counter.
     while test:
-        # L = len(possible_list)
-        # ll = np.random.randint(0, L)
-        # list_temp = possible_list[ll]
         list_temp = random.choice(possible_list)
         gridfull_temp = grid_generation(grid, list_temp)
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
