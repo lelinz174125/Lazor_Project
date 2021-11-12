@@ -31,14 +31,16 @@ The grid should be placed between **GRID STAR** and **GRID STOP**.
 
 ## How can this script help you solve the puzzle?
 Here, we take 'yarn_5' for example. The snapshot of this level is 
-![yarn_5_origin](/assets/images/yarn_5_origin.jpg)
+![yarn_5_origin](https://assets/images/yarn_5_origin.jpg)
 
 After running, you can get two picture named as 'yarn_5.png' and 'yarn_5_solved.png', which looks like 
-![yarn_5](/assets/images/yarn_5.png)
-![yarn_5_solved](/assets/images/yarn_5_solved.png)
+![yarn_5](https://assets/images/yarn_5.png)
+![yarn_5_solved](https://assets/images/yarn_5_solved.png)
 
 ## Contributors
 This prohect exists thankls to all the people who contribure.
 Mingze Zheng: mzheng15@jhu.edu, mzheng15
+
 Bo Chao: bchao4@jhu.edu, bchao4
+
 Lelin Zhong: lzhong6@jhu.edu, lzhong6
