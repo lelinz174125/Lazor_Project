@@ -375,15 +375,16 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
     img.save("%s" % filename)
 
 class Grid(object):
-    def __init__(self,origrid):
-        
+    def __init__(self,origrid):        
         self.origrid = origrid
         self.length = len(origrid)
         self.width = len(origrid[0])
+    
+    def __call__(self,  origrid) :
+        return origrid
 
-
-    def gen_grid(self,origrid,listgrid):
-        self.listgrid = listgrid
+    def gen_grid(self,listgrid):
+        self.listgrid = listgrid    
         '''
         This function can fill ABC block into the grid.
 
@@ -401,11 +402,11 @@ class Grid(object):
         '''
         for row in range(1,self.length,2):
             for column in range(1,self.width,2):
-                if origrid[row][column] == 'o':
-                    origrid[row][column] =  self.listgrid.pop(0)
+                if self.origrid[row][column] != 'x':
+                    self.origrid[row][column] =  self.listgrid.pop(0)
                    
         # print(gridfull_temp)
-        return origrid
+        return self.origrid
 
 class Lazor(object):
 
@@ -575,6 +576,7 @@ class Lazor(object):
                 return 0
 
 def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
+    
     Blocks = []
     for a in grid:
         for b in a:
@@ -591,32 +593,30 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         Blocks[i] = 'C'
     list_Blocks = list(multiset_permutations(Blocks))
     
+    # grid1=grid.copy()
+    # print(grid1)
+    # grid_possible = []
+    # for i in range(len(list_Blocks)):
+        
+    #     trylist = list_Blocks[i]
+    #     print(trylist)
+    #     grid_possible.append(Grid(grid1).gen_grid(trylist))
+    #     print(trylist)
+    #     print()
+        # print(grid_possible)
+
     while len(list_Blocks)!=0:
         #引用Grid函数生成board
         list_temp = random.choice(list_Blocks)
-        # print(list_temp)
         list_Blocks.remove(list_temp)
-        # lirytey =[]
-        # lirytey = ['o', 'o', 'o', 'o', 
-        #             'o', 'A', 'o', 'o', 
-        #             'A', 'o', 'o', 'o', 
-        #             'o', 'A', 'o', 'A', 
-        #             'o', 'o', 'A', 'o']
-
-        # if lirytey == list_temp:
-        print('0_list_temp')
-        print(list_temp)
         ori_grid = Grid(grid)
-        test_board = ori_grid.gen_grid(grid,list_temp)
-        print('1_list_temp')
-        print(list_temp)
+        test_board = ori_grid.gen_grid(list_temp)
         lazor = Lazor(test_board,lazorlist, holelist)
         solution = lazor.lazor_path()
         if solution != 0:
             return solution
         else:
             continue
-
         # fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
         #         ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
         #         ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
@@ -649,13 +649,14 @@ def solver(fptr):
     lazorlist = read[4]
     holelist = read[5]
     smallgrid = read[6]
-    print(find_path(grid,a,b,c,lazorlist,holelist)[0])
-    print(find_path(grid,a,b,c,lazorlist,holelist)[1])
-
+    answer = find_path(grid,a,b,c,lazorlist,holelist)
+    print(answer)
     save_answer_board(solved_board=smallgrid, answer_lazor=find_path(grid,a,b,c,lazorlist,holelist)[1], lazors_info=lazorlist,
                             holes=holelist, filename=fptr)
 
 
 if __name__ == "__main__":
-
-    solver('mad_4.bff')
+    t0 = time.time()
+    solver('mad_7.bff')
+    t1 = time.time()
+    print(t1-t0)
