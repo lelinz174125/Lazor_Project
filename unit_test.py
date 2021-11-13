@@ -3,7 +3,7 @@ import lazor_project_final
 
 
 class TestStringMethods(unittest.TestCase):
-
+# Here we take 'mad_1.bff' as teh test object
     def test_read(self):
         '''
         This function can test the read funciton.
