@@ -645,6 +645,12 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         
         # print(result,polazorlist)
 
+# def find_fixed_block(small_grid):
+#     for i in small_grid:
+#         for j in i:
+
+#     return
+
 def solver(fptr):
     read = read_bff(fptr)
     grid = read[0]
@@ -654,14 +660,25 @@ def solver(fptr):
     lazorlist = read[4]
     holelist = read[5]
     smallgrid = read[6]
+    # find_fixed_block(smallgrid)
+    
+   
     answer = find_path(grid,a,b,c,lazorlist,holelist)
     print(answer)
-    save_answer_board(solved_board=smallgrid, answer_lazor=find_path(grid,a,b,c,lazorlist,holelist)[1], lazors_info=lazorlist,
-                            holes=holelist, filename=fptr)
+    # save_answer_board(solved_board=smallgrid, answer_lazor=find_path(grid,a,b,c,lazorlist,holelist)[1], lazors_info=lazorlist,
+    #                         holes=holelist, filename=fptr)
 
 
 if __name__ == "__main__":
     t0 = time.time()
-    solver('mad_7.bff')
+    # solver('dark_1.bff')
+    # solver('mad_1.bff')
+    # solver('mad_4.bff')
+    # solver('mad_7.bff')
+    # solver('tiny_5.bff')
+    solver('yarn_5.bff')
+    # solver('numbered_6.bff')
+    # solver('showstopper_4.bff')
+    
     t1 = time.time()
     print(t1-t0)
