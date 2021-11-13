@@ -565,7 +565,7 @@ class Lazor(object):
                         coordination_newlaz1 = [
                             coordination[0] + direction[0], coordination[1] + direction[1]]
                         coordination_newlaz2 = [
-                            coordination[0] + direction[2], coordination[1] + direction[3]]
+                            coordination[0], coordination[1]]
                         lazorlist.append(
                             [[coordination_newlaz1[0], coordination_newlaz1[1], direction[0], direction[1]]])
                         lazorlist[k].append(
