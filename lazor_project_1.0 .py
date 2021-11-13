@@ -322,7 +322,19 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
     for ii in range(len(lazorlist)):
         if int(lazorlist[ii][0][1]) % 2 == 1:  # left&right
             x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
-            if x_temp == len(gridfull_temp[0]):
+            if x_temp > 0 and x_temp != len(gridfull_temp[0])-1:
+                if gridfull_temp[y_temp][x_temp - 1] and gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
+                    possible_list.remove(list_temp)
+                    return False
+                else:
+                    return True
+            if x_temp == 0:
+                if gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
+                    possible_list.remove(list_temp)
+                    return False
+                else:
+                    return True
+            if x_temp == len(gridfull_temp[0])-1:
                 if gridfull_temp[y_temp][x_temp - 1] in ['A', 'B']:
                     possible_list.remove(list_temp)
                     return False
@@ -331,7 +343,7 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 
         if int(lazorlist[ii][0][1]) % 2 == 0:  # up&down
             x_temp, y_temp = lazorlist[ii][0][0], lazorlist[ii][0][1]
-            if y_temp > 0:
+            if y_temp > 0 and y_temp != len(gridfull_temp)-1:
                 if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
                     possible_list.remove(list_temp)
                     return False
@@ -343,12 +355,14 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                     return False
                 else:
                     return True
-            if y_temp == len(gridfull_temp):
+            
+            if y_temp == len(gridfull_temp) - 1:
                 if gridfull_temp[y_temp - 1][x_temp] in ['A', 'B']:
                     possible_list.remove(list_temp)
                     return False
                 else:
                     return True
+
     for jj in range(len(holelist)):
         x_hole = holelist[jj][1]
         y_hole = holelist[jj][0]
