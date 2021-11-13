@@ -571,7 +571,7 @@ class Lazor(object):
                             print('Wrong')
             if len(result) == len(self.holelist):
                 # print(result,lazorlist)
-                return result, lazorlist
+                return lazorlist
             else:
                 return 0
 
