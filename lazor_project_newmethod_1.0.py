@@ -375,15 +375,15 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
     img.save("%s" % filename)
 
 class Grid(object):
-    def __init__(self, origrid, listgrid):
+    def __init__(self,origrid):
+        
+        self.origrid = origrid
         self.length = len(origrid)
         self.width = len(origrid[0])
-        self.origrid = origrid
-        self.list = listgrid
 
 
-    def gen_grid(self):
-    
+    def gen_grid(self,origrid,listgrid):
+        self.listgrid = listgrid
         '''
         This function can fill ABC block into the grid.
 
@@ -401,11 +401,11 @@ class Grid(object):
         '''
         for row in range(1,self.length,2):
             for column in range(1,self.width,2):
-                if self.origrid[row][column] == 'o':
-                    self.origrid[row][column] = self.list.pop(0)
+                if origrid[row][column] == 'o':
+                    origrid[row][column] =  self.listgrid.pop(0)
                    
         # print(gridfull_temp)
-        return self.origrid
+        return origrid
 
 class Lazor(object):
 
@@ -589,13 +589,10 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         # print(Blocks)
     for i in range((A_num + B_num), (A_num + B_num + C_num)):
         Blocks[i] = 'C'
-
     list_Blocks = list(multiset_permutations(Blocks))
     
-
     while len(list_Blocks)!=0:
         #引用Grid函数生成board
-        
         list_temp = random.choice(list_Blocks)
         # print(list_temp)
         list_Blocks.remove(list_temp)
@@ -609,8 +606,8 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         # if lirytey == list_temp:
         print('0_list_temp')
         print(list_temp)
-        ori_grid = Grid(grid,list_temp)
-        test_board = ori_grid.gen_grid()
+        ori_grid = Grid(grid)
+        test_board = ori_grid.gen_grid(grid,list_temp)
         print('1_list_temp')
         print(list_temp)
         lazor = Lazor(test_board,lazorlist, holelist)
@@ -619,10 +616,6 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
             return solution
         else:
             continue
-
-def check_solution(grid,list_temp,lazorlist, holelist):       
-
-   
 
         # fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
         #         ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
