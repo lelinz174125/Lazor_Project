@@ -679,6 +679,6 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
-    solver('showstopper_4.bff')
+    solver('tiny_5.bff')
     t1 = time.time()
     print(t1 - t0)
