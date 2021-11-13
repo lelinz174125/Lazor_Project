@@ -384,6 +384,7 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     num = 0
     test = True
     # When all the holes are filled, the loop ends, we also added an upper limit to the counter.
+    
     while test:
         # L = len(possible_list)
         # ll = np.random.randint(0, L)
@@ -397,8 +398,10 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
         onegrid_start=time.time()
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             num += 1
+            add_test1 = time.time()
             for n in range(30):
                 # The original lazor is added to the lazor list
+                
                 for k in range(len(lazorlist)):
                     coordination_x = lazorlist[k][-1][0]
                     coordination_y = lazorlist[k][-1][1]
@@ -421,9 +424,12 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                                 result.append(coordination)
                         # If there are 2 elements, it is "o" or A block
                         elif len(next_step) == 2:
+                            
                             direction = next_step
                             coordination = [
                                 coordination[0] + direction[0], coordination[1] + direction[1]]
+                            
+                            
                             lazorlist[k].append(
                                 [coordination[0], coordination[1], direction[0], direction[1]])
                             if (coordination in holelist) and (coordination not in result):
@@ -445,6 +451,10 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                                 result.append(coordination)
                         else:
                             print('Wrong')
+
+            add_test2 = time.time()
+            # print('adding %f seconds' % (add_test2 - add_test1))
+
             if len(result) == len(holelist):
                 test = False
                 good_grid = []
@@ -463,8 +473,11 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                 lazorlist = copy.deepcopy(lazorlist_save)
                 possible_list.remove(list_temp)
                 result = []
+            add_test3 = time.time()
+            print('last %f seconds' % (add_test3 - add_test2))
         onegrid_end=time.time()
 
+        
         # print('generate each grid %f seconds' % (gengrid_end - gengrid_start))
         # print('try for each grid %f seconds' % (onegrid_end - onegrid_start))
         # print('generate grid list %f seconds' % (gridlist_end - gridlist_start))
@@ -971,8 +984,6 @@ if __name__ == "__main__":
     holelist = read[5]
     smallgrid = read[6]
     open_end = time.time()
-    # all_pos = inputblock(grid, a, b, c)
-    # print(all_pos)
 
     answer = solver(grid=grid, init_laz_list=lazorlist,
                     holelist=holelist, a=a, b=b, c=c, init_grid=smallgrid)
