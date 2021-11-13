@@ -732,23 +732,23 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
         img_new.ellipse([lazor_pos[0] * blockSize / 2 - 10, lazor_pos[1] * blockSize / 2 - 10,
                          lazor_pos[0] * blockSize / 2 + 10, lazor_pos[1] * blockSize / 2 + 10], fill=(255, 0, 0))
 
-        for i in answer_lazor:
-            end = [i[-1][0], i[-1][1]]
-            while end not in holes:
-                i.pop()
-                end = [i[-1][0], i[-1][1]]
+        # for i in answer_lazor:
+        #     end = [i[-1][0], i[-1][1]]
+        #     while end not in holes:
+        #         i.pop()
+        #         end = [i[-1][0], i[-1][1]]
 
-        for i in answer_lazor:
-            for point in range(len(i)):
-                co_start = (i[point][0] * blockSize / 2,
-                            i[point][1] * blockSize / 2)
-                if point + 1 < len(i):
-                    co_end = (i[point + 1][0] * blockSize / 2,
-                              i[point + 1][1] * blockSize / 2)
-                else:
-                    co_end = co_start
-                img_new = ImageDraw.Draw(img)
-                img_new.line([co_start, co_end], fill=(255, 0, 0), width=5)
+    for i in answer_lazor:
+        for point in range(len(i)):
+            co_start = (i[point][0] * blockSize / 2,
+                        i[point][1] * blockSize / 2)
+            if point + 1 < len(i):
+                co_end = (i[point + 1][0] * blockSize / 2,
+                            i[point + 1][1] * blockSize / 2)
+            else:
+                co_end = co_start
+            img_new = ImageDraw.Draw(img)
+            img_new.line([co_start, co_end], fill=(255, 0, 0), width=5)
 
     for i in range(len(holes)):
         img_new.ellipse([holes[i][0] * blockSize / 2 - 10, holes[i][1] * blockSize / 2 - 10,
@@ -1040,7 +1040,7 @@ if __name__ == "__main__":
 
     t0 = time.time()
     open_start = time.time()
-    read = read_bff('mad_7.bff')
+    read = read_bff('mad_1.bff')
     grid = read[0]
     a = read[1]
     b = read[2]
@@ -1064,6 +1064,6 @@ if __name__ == "__main__":
     print('solving all puzzles took %f seconds' % (t1 - t0))
 
     save_board(unsolved_board=smallgrid, lazors_info=lazorlist,
-               holes=holelist, filename='mad_7.bff')
+               holes=holelist, filename='mad_1.bff')
     save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
-                      holes=holelist, filename='mad_7.bff')
+                      holes=holelist, filename='mad_1.bff')
