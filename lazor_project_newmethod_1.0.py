@@ -402,7 +402,7 @@ class Grid(object):
         '''
         for row in range(1,self.length,2):
             for column in range(1,self.width,2):
-                if self.origrid[row][column] != 'x':
+                if self.origrid[row][column] != 'x' and self.listgrid !=[]:
                     self.origrid[row][column] =  self.listgrid.pop(0)
                    
         # print(gridfull_temp)
@@ -607,12 +607,17 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
 
     while len(list_Blocks)!=0:
         #引用Grid函数生成board
-        list_temp = random.choice(list_Blocks)
-        list_Blocks.remove(list_temp)
+        list_temp = list_Blocks[-1]
+        list_Blocks.pop()
+        t0 = time.time()
         ori_grid = Grid(grid)
         test_board = ori_grid.gen_grid(list_temp)
+        t1 = time.time()
         lazor = Lazor(test_board,lazorlist, holelist)
         solution = lazor.lazor_path()
+        t2 = time.time()
+        # print('generate grid %f seconds' % (t2 - t1))
+        print('read each grid %f seconds' %(t1 - t0 ))
         if solution != 0:
             return solution
         else:
@@ -657,6 +662,6 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
-    solver('mad_7.bff')
+    solver('mad_4.bff')
     t1 = time.time()
     print(t1-t0)
