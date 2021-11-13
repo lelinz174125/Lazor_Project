@@ -373,7 +373,12 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
         lazorlist = copy.deepcopy(lazorlist_save)
     coordination = (0, 0)
     direction = (0, 0)
+
+    # time test
+    gridlist_start = time.time()
     possible_list = inputblock(grid, a, b, c)
+    gridlist_end = time.time()
+
     # print(len(possible_list))
     # print(lazorlist)
     num = 0
@@ -383,9 +388,13 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
         # L = len(possible_list)
         # ll = np.random.randint(0, L)
         # list_temp = possible_list[ll]
-
+        # time test
+        gengrid_start=time.time()
         list_temp = random.choice(possible_list)
         gridfull_temp, list_temp = grid_generation(grid, list_temp)
+        gengrid_end=time.time()
+
+        onegrid_start=time.time()
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             num += 1
             for n in range(30):
@@ -454,6 +463,11 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                 lazorlist = copy.deepcopy(lazorlist_save)
                 possible_list.remove(list_temp)
                 result = []
+        onegrid_end=time.time()
+
+        # print('generate each grid %f seconds' % (gengrid_end - gengrid_start))
+        # print('try for each grid %f seconds' % (onegrid_end - onegrid_start))
+        # print('generate grid list %f seconds' % (gridlist_end - gridlist_start))
 
 
 def get_colors():
@@ -945,7 +959,10 @@ def unit_test():
 
 
 if __name__ == "__main__":
-    read = read_bff('numbered_6.bff')
+
+    t0 = time.time()
+    open_start = time.time()
+    read = read_bff('mad_7.bff')
     grid = read[0]
     a = read[1]
     b = read[2]
@@ -953,9 +970,10 @@ if __name__ == "__main__":
     lazorlist = read[4]
     holelist = read[5]
     smallgrid = read[6]
+    open_end = time.time()
     # all_pos = inputblock(grid, a, b, c)
     # print(all_pos)
-    t0 = time.time()
+
     answer = solver(grid=grid, init_laz_list=lazorlist,
                     holelist=holelist, a=a, b=b, c=c, init_grid=smallgrid)
     solved_grid = answer[0]
@@ -965,8 +983,11 @@ if __name__ == "__main__":
     # print(solved_lazor)
     # print(small_solved_grid)
     t1 = time.time()
-    print (t1 - t0)
+
+    print('reading %f seconds' % (open_end- open_start))
+    print ('solving all puzzles took %f seconds' %(t1 - t0))
+
     save_board(unsolved_board=smallgrid, lazors_info=lazorlist,
-               holes=holelist, filename='numbered_6')
+               holes=holelist, filename='mad_7.bff')
     save_answer_board(solved_board=small_solved_grid, answer_lazor=solved_lazor, lazors_info=lazorlist,
-                      holes=holelist, filename='numbered_6')
+                      holes=holelist, filename='mad_7.bff')
