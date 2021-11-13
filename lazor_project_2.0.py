@@ -413,7 +413,7 @@ def grid_generation(grid, list_temp):
 
 
 def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
-    '''
+    """
     This function is the main function of the code, it uses
     the board we read and generated and the blocks we defined above.
     We first save all the points of the initial lazer and put the blocks
@@ -423,62 +423,44 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
     the coordinate of each block.
 
     **Parameters**
-
-        grid: *list*
-            The grid contains a list of lists that can represent the grid.
-        init_laz_list: *list*
-            The lazor contains the starting point coodinate and the direction
-        of the lazors given.
-        holelist: *list*
-            The holelist contains all the holes' coordinates.
-
-    **Return**
-        gridfull_temp: *list*
-            The full grid
-        lazorlist: *list*
-            The coordinations that lasers passed by
-        list_temp: *list*
-            The correct arrangement of blocks
-        good_grid: *list*
-            The grid in oringinal format
-
-    '''
+    grid:*list,list,string*
+        The grid contains a list of lists that can represent the grid.
+    init_laz_list:*Array*
+        The lazor contains the starting point coodinate and the direction
+    of the lazors given.
+    holelist:*list*
+        The holelist contains all the holes' coordinates.
+    """
     result = []
-    lazorlist_save = []
-    for p in range(len(init_laz_list)):
-        lazorlist_save.append([init_laz_list[p]])
-        lazorlist = copy.deepcopy(lazorlist_save)
+    grid_tuple = tuple(grid)
+    # lazorlist = copy.deepcopy(lazorlist_save)
     coordination = (0, 0)
     direction = (0, 0)
-
-    # time test
-    gridlist_start = time.time()
     possible_list = inputblock(grid, a, b, c)
-    gridlist_end = time.time()
-
-    # print(len(possible_list))
+    print(len(possible_list))
     # print(lazorlist)
     num = 0
     test = True
     # When all the holes are filled, the loop ends, we also added an upper limit to the counter.
-
     while test:
+        lazorlist = []
+        p = 0
+        for p in range(len(init_laz_list)):
+            lazorlist.append([init_laz_list[p]])
         # L = len(possible_list)
         # ll = np.random.randint(0, L)
         # list_temp = possible_list[ll]
-        # time test
-        gengrid_start = time.time()
         list_temp = random.choice(possible_list)
         gridfull_temp, list_temp = grid_generation(grid, list_temp)
-        gengrid_end = time.time()
-
-        onegrid_start = time.time()
+        # print(gridfull_temp)
+        # # print(possible_list)
+        # print(list_temp)
+        # print(lazorlist)
+        # print(holelist)
         if obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
             num += 1
-            add_test1 = time.time()
             for n in range(30):
                 # The original lazor is added to the lazor list
-
                 for k in range(len(lazorlist)):
                     coordination_x = lazorlist[k][-1][0]
                     coordination_y = lazorlist[k][-1][1]
@@ -501,11 +483,9 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                                 result.append(coordination)
                         # If there are 2 elements, it is "o" or A block
                         elif len(next_step) == 2:
-
                             direction = next_step
                             coordination = [
                                 coordination[0] + direction[0], coordination[1] + direction[1]]
-
                             lazorlist[k].append(
                                 [coordination[0], coordination[1], direction[0], direction[1]])
                             if (coordination in holelist) and (coordination not in result):
@@ -527,15 +507,12 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                                 result.append(coordination)
                         else:
                             print('Wrong')
-
-            add_test2 = time.time()
-            # print('adding %f seconds' % (add_test2 - add_test1))
-
             if len(result) == len(holelist):
                 test = False
                 good_grid = []
                 smallgrid = init_grid
                 good_list = copy.deepcopy(list_temp)
+                # print(list_temp)
                 good_grid = copy.deepcopy(smallgrid)
                 for row in range(len(good_grid)):
                     for column in range(len(good_grid[0])):
@@ -545,17 +522,12 @@ def solver(grid, init_laz_list, holelist, a, b, c, init_grid):
                 print(num)
                 return gridfull_temp, lazorlist, list_temp, good_grid
             else:
-                gridfull_temp = copy.deepcopy(grid)
-                lazorlist = copy.deepcopy(lazorlist_save)
+                gridfull_temp = list(grid_tuple)
+                # lazorlist = copy.deepcopy(lazorlist_save)
                 possible_list.remove(list_temp)
+                lazorlist = []
                 result = []
-            add_test3 = time.time()
-            print('last %f seconds' % (add_test3 - add_test2))
-        onegrid_end = time.time()
-
-        # print('generate each grid %f seconds' % (gengrid_end - gengrid_start))
-        # print('try for each grid %f seconds' % (onegrid_end - onegrid_start))
-        # print('generate grid list %f seconds' % (gridlist_end - gridlist_start))
+                p = 0
 
 
 def get_colors():
