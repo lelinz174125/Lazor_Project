@@ -617,7 +617,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         solution = lazor.lazor_path()
         t2 = time.time()
         # print('generate grid %f seconds' % (t2 - t1))
-        print('read each grid %f seconds' %(t1 - t0 ))
+        # print('read each grid %f seconds' %(t1 - t0 ))
         if solution != 0:
             return solution
         else:
@@ -662,6 +662,6 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
-    solver('mad_4.bff')
+    solver('mad_7.bff')
     t1 = time.time()
     print(t1-t0)
