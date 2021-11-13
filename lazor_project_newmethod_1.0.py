@@ -375,11 +375,12 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
     img.save("%s" % filename)
 
 class Grid(object):
-    def __init__(self, origrid,listgrid):
+    def __init__(self, origrid, listgrid):
         self.length = len(origrid)
         self.width = len(origrid[0])
         self.origrid = origrid
         self.list = listgrid
+
 
     def gen_grid(self):
     
@@ -608,25 +609,20 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         # if lirytey == list_temp:
         print('0_list_temp')
         print(list_temp)
-        answer = check_solution(grid,list_temp,lazorlist, holelist)
-        if  answer != False :
-            return answer 
+        ori_grid = Grid(grid,list_temp)
+        test_board = ori_grid.gen_grid()
+        print('1_list_temp')
+        print(list_temp)
+        lazor = Lazor(test_board,lazorlist, holelist)
+        solution = lazor.lazor_path()
+        if solution != 0:
+            return solution
         else:
             continue
 
 def check_solution(grid,list_temp,lazorlist, holelist):       
 
-    ori_grid = Grid(grid,list_temp)
-    test_board = ori_grid.gen_grid()
-    print('1_list_temp')
-    print(list_temp)
-    
-    lazor = Lazor(test_board,lazorlist, holelist)
-    solution = lazor.lazor_path()
-    if solution != 0:
-        return solution
-    else:
-        return False
+   
 
         # fullgrid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
         #         ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
