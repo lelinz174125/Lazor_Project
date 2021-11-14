@@ -33,10 +33,11 @@ The grid should be placed between **GRID START** and **GRID STOP**.
 **P**: The positions that lazers need to intersect.  
 
 ## How can this script help you solve the puzzle?
+This script can solve puzzles ***really*** fast.  
 Here, we take 'yarn_5' for example. The snapshot of this level is  
 
 
-<img width="405" height="866.25" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_origin.jpg>
+<img width="375" height="802.08" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_origin.jpg>
 
 After running, you can get the answer picture named as 'yarn_5_solved.png', which looks like   
 
@@ -49,7 +50,7 @@ Or for level mad_1, the answer looks like:
 
 <img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/mad_1_solved.png>  
   
-  
+
 **White Block**: Reflect block  
 **Black Block**: Opaque block  
 **Red Block**: Refract block  
