@@ -1,4 +1,4 @@
-# Lazor_Project: 
+# Lazor_Project
 This is a project aiming at solving levels in the game 'LAZOR'
 ## Background
 Lazor is a popular puzzle game in which you need to arrange blocks wisely to achieve the goals at each level. You can get this game on [Steam](https://store.steampowered.com/app/341290/Lazors/), [Google play](https://play.google.com/store/apps/details?id=net.pyrosphere.lazors&hl=en_US&gl=US), or search it on App Store. Some of the levels are easy, but some of them can be hard to solve. This project is to solve some of them.
