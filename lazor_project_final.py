@@ -502,7 +502,9 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
             The first two elements is the positon of the start point, the last two elements are the direction.
         holelist: *list*
             The positions of the end points   
-
+        position: *list*
+            A list store the pre-placed blocks
+    
     **Return**
 
         solution: *list*
@@ -549,7 +551,6 @@ def find_fixed_block(smallgrid):
             block = smallgrid[i][j]
             if block == 'A' or block == 'B' or block=='C':
                 position.append([i*2+1,j*2+1])
-    print(position)
     return position
 
 
@@ -597,6 +598,7 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
+<<<<<<< Updated upstream
     solver('dark_1.bff')
     solver('mad_1.bff')
     solver('mad_4.bff')
@@ -605,5 +607,16 @@ if __name__ == "__main__":
     solver('showstopper_4.bff')
     solver('tiny_5.bff')
     solver('yarn_5.bff')
+=======
+    # solver('yarn_5.bff')
+    # solver('dark_1.bff')
+    # solver('mad_1.bff')
+    # solver('mad_4.bff')
+    solver('mad_7.bff')
+    # solver('numbered_6.bff')
+    # solver('showstopper_4.bff')
+    # solver('tiny_5.bff')
+    # solver('yarn_5.bff')
+>>>>>>> Stashed changes
     t1 = time.time()
     print(t1 - t0)
