@@ -33,8 +33,7 @@ The grid should be placed between **GRID STAR** and **GRID STOP**.
 Here, we take 'yarn_5' for example. The snapshot of this level is 
 <img width="405" height="866.25" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_origin.jpg>
 
-After running, you can get two picture named as 'yarn_5.png' and 'yarn_5_solved.png', which looks like 
-<img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5.png>
+After running, you can get the answer picture named as 'yarn_5_solved.png', which looks like 
 <img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_solved.png>
 
 ## Contributors
