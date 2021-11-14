@@ -50,6 +50,7 @@ class TestStringMethods(unittest.TestCase):
         C_blocks = 1
         lazorlist = [[2, 7, 1, -1]]
         holelist = [[3, 0], [4, 3], [2, 5], [4, 7]]
+        position = [[0]]
         solved_grid = [['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
                        ['x', 'o', 'x', 'o', 'x', 'C', 'x', 'o', 'x'],
                        ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
@@ -60,7 +61,7 @@ class TestStringMethods(unittest.TestCase):
                        ['x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'],
                        ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']]
         self.assertEqual(lazor_project_final.find_path(grid=fullgrid, A_num=A_blocks, B_num=B_blocks,
-                        C_num=C_blocks, lazorlist=lazorlist, holelist=holelist)[2], solved_grid)
+                        C_num=C_blocks, lazorlist=lazorlist, holelist=holelist, position=position)[2], solved_grid)
 
     def test_path(self):
         '''
