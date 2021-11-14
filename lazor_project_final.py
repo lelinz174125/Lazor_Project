@@ -548,12 +548,12 @@ def find_fixed_block(smallgrid):
             block = smallgrid[i][j]
             if block == 'A' or block == 'B' or block=='C':
                 position.append([i*2+1,j*2+1])
+    print(position)
     return position
 
 def solver(fptr):
     '''
-    Thi
-    s function gives every correct staffs
+    This function gives every correct staffs
 
     **Parameters**
 
@@ -599,7 +599,7 @@ if __name__ == "__main__":
     # solver('dark_1.bff')
     # solver('mad_1.bff')
     # solver('mad_4.bff')
-    solver('mad_7.bff')
+    solver('mad_1.bff')
     # solver('numbered_6.bff')
     # solver('showstopper_4.bff')
     # solver('tiny_5.bff')
