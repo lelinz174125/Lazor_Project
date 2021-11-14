@@ -484,6 +484,82 @@ class Lazor(object):
             return 0
 
 
+def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
+    '''
+    This function can skip some obviously wrong grid
+
+    **Parameters**
+
+        lazorlist: *list*
+            The list contains all the lasers. 
+
+        gridfull_temp: *list*
+            The grid about to be solved
+
+        possible_list: *list
+            All possible permutations of 'ABCo'.
+
+        list_temp: *list*
+            The permutation currently being used.
+
+        holelist: *list*
+            The positions of the end points
+
+    **Return**
+
+        None
+    '''
+
+    # any lazor is surrounded
+    for ii in range(len(lazorlist)):
+        if int(lazorlist[ii][1]) % 2 == 1:  # left&right
+            x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
+            if x_temp > 0 and x_temp != len(gridfull_temp[0])-1:
+                if gridfull_temp[y_temp][x_temp - 1] and gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
+                    return False
+                else:
+                    return True
+            if x_temp == 0:
+                if gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
+                    return False
+                else:
+                    return True
+            if x_temp == len(gridfull_temp[0])-1:
+                if gridfull_temp[y_temp][x_temp - 1] in ['A', 'B']:
+                    return False
+                else:
+                    return True
+
+        if int(lazorlist[ii][1]) % 2 == 0:  # up&down
+            x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
+            if y_temp > 0 and y_temp != len(gridfull_temp)-1:
+                if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
+                    return False
+                else:
+                    return True
+            if y_temp == 0:
+                if gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
+                    return False
+                else:
+                    return True
+
+            if y_temp == len(gridfull_temp) - 1:
+                if gridfull_temp[y_temp - 1][x_temp] in ['A', 'B']:
+                    return False
+                else:
+                    return True
+
+    for jj in range(len(holelist)):
+        x_hole = holelist[jj][1]
+        y_hole = holelist[jj][0]
+        if ((gridfull_temp[x_hole][y_hole + 1] in ['A', 'B']) and (gridfull_temp[x_hole][y_hole - 1] in ['A', 'B'])) or \
+                ((gridfull_temp[x_hole + 1][y_hole] in ['A', 'B']) and (gridfull_temp[x_hole - 1][y_hole] in ['A', 'B'])):
+            possible_list.remove(list_temp)
+            return False
+        else:
+            return True
+
+
 def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
     '''
     Generate a possible grid with blocks filled in
@@ -536,12 +612,13 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
         list_Blocks.pop()
         ori_grid = Grid(grid)
         test_board = ori_grid.gen_grid(list_temp,position)
-        lazor = Lazor(test_board, lazorlist, holelist)
-        solution = lazor.lazor_path()
-        if solution != 0:
-            return solution, list_temp_save, test_board
-        else:
-            continue
+        if obvs_judge(lazorlist, test_board, list_Blocks, list_temp, holelist):
+            lazor = Lazor(test_board, lazorlist, holelist)
+            solution = lazor.lazor_path()
+            if solution != 0:
+                return solution, list_temp_save, test_board
+            else:
+                continue
 
 
 def find_fixed_block(smallgrid):
@@ -598,25 +675,22 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
-<<<<<<< Updated upstream
-    solver('dark_1.bff')
-    solver('mad_1.bff')
-    solver('mad_4.bff')
-    solver('mad_7.bff')
-    solver('numbered_6.bff')
-    solver('showstopper_4.bff')
-    solver('tiny_5.bff')
-    solver('yarn_5.bff')
-=======
-    # solver('yarn_5.bff')
     # solver('dark_1.bff')
     # solver('mad_1.bff')
     # solver('mad_4.bff')
-    solver('mad_7.bff')
+    # solver('mad_7.bff')
     # solver('numbered_6.bff')
     # solver('showstopper_4.bff')
     # solver('tiny_5.bff')
     # solver('yarn_5.bff')
->>>>>>> Stashed changes
+    # solver('yarn_5.bff')
+    # solver('dark_1.bff')
+    # solver('mad_1.bff')
+    # solver('mad_4.bff')
+    # solver('mad_7.bff')
+    # solver('numbered_6.bff')
+    # solver('showstopper_4.bff')
+    # solver('tiny_5.bff')
+    solver('yarn_5.bff')
     t1 = time.time()
     print(t1 - t0)
