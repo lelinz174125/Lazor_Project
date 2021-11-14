@@ -549,6 +549,7 @@ def find_fixed_block(smallgrid):
             block = smallgrid[i][j]
             if block == 'A' or block == 'B' or block=='C':
                 position.append([i*2+1,j*2+1])
+    print(position)
     return position
 
 
