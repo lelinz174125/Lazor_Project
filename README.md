@@ -1,7 +1,7 @@
 # Lazor_Project: 
 This is a project aiming at solving levels in the game 'LAZOR'
 ## Background
-Lazor is a popular puzzle game which you need to arrange blocks wisely to achieve the goals in each level. You can get this game on [Steam](https://store.steampowered.com/app/341290/Lazors/), [Google play](https://play.google.com/store/apps/details?id=net.pyrosphere.lazors&hl=en_US&gl=US) or search it on App Store. Some of the levels are easy, but some of them can be really hard to solve. This project is to solve some of them.
+Lazor is a popular puzzle game in which you need to arrange blocks wisely to achieve the goals at each level. You can get this game on [Steam](https://store.steampowered.com/app/341290/Lazors/), [Google play](https://play.google.com/store/apps/details?id=net.pyrosphere.lazors&hl=en_US&gl=US), or search it on App Store. Some of the levels are easy, but some of them can be hard to solve. This project is to solve some of them.
 
 ## How to use it?
 Get the .bff file of the level you want to solve or simply write one. A standard .bff should look like this:  
@@ -52,7 +52,7 @@ Or for level mad_1, the answer looks like:
 
 
 ## Contributors
-This prohect exists thankls to all the people who contribure.  
+This project exists thanks to all the people who contribute.  
 Mingze Zheng: mzheng15@jhu.edu, mzheng15  
 Bo Chao: bchao4@jhu.edu, bchao4  
 Lelin Zhong: lzhong6@jhu.edu, lzhong6
