@@ -39,7 +39,7 @@ Here, we take 'yarn_5' for example. The snapshot of this level is
 After running, you can get the answer picture named as 'yarn_5_solved.png', which looks like 
 <img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_solved.png>  
 Or for level mad_1, the answer looks like:    
-<img width="375" height="300" src=https://github.com/lelinz174125/Lazor_Project/blob/main/mad_1_solved.png>  
+<img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/mad_1_solved.png>  
   
 **White Block**: Reflect block  
 **Black Block**: Opaque block  
