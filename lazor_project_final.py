@@ -711,7 +711,6 @@ if __name__ == "__main__":
     # solver('dark_1.bff')
     # solver('mad_1.bff')
     # solver('mad_4.bff')
-    # solver('mad_7.bff')
     # solver('numbered_6.bff')
     # solver('showstopper_4.bff')
     # solver('tiny_5.bff')
