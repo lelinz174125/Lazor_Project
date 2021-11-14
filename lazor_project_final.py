@@ -495,7 +495,7 @@ class Lazor(object):
 
 def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
     '''
-    This function can skip some obviously wrong grid
+    This function can skip some obviously wrong grids generated
 
     **Parameters**
 
@@ -519,9 +519,10 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
         None
     '''
 
-    # any lazor is surrounded
+    # Any laser or hole that is surrounded by 'A' or 'B' blocks can not have a result , thus we
+    # rule them out
     for ii in range(len(lazorlist)):
-        if int(lazorlist[ii][1]) % 2 == 1:  # left&right
+        if int(lazorlist[ii][1]) % 2 == 1:  # Suitable for blocks blocking left&right
             x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
             if x_temp > 0 and x_temp != len(gridfull_temp[0])-1:
                 if gridfull_temp[y_temp][x_temp - 1] and gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
@@ -539,7 +540,7 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                 else:
                     return True
 
-        if int(lazorlist[ii][1]) % 2 == 0:  # up&down
+        if int(lazorlist[ii][1]) % 2 == 0:  # Suitable for blocks blocking up&down
             x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
             if y_temp > 0 and y_temp != len(gridfull_temp)-1:
                 if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
@@ -558,7 +559,7 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                 else:
                     return True
 
-    for jj in range(len(holelist)):
+    for jj in range(len(holelist)): # Ruling out grids that have blocks blocking a hole
         x_hole = holelist[jj][1]
         y_hole = holelist[jj][0]
         if ((gridfull_temp[x_hole][y_hole + 1] in ['A', 'B']) and (gridfull_temp[x_hole][y_hole - 1] in ['A', 'B'])) or \
@@ -571,7 +572,7 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 
 def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
     '''
-    Generate a possible grid with blocks filled in
+    Generate a possible grid with blocks filled in and solves it, if it is the right grid, we return all the necessary parameters of the grid
 
     **Parameters**
 
@@ -589,7 +590,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
             The positions of the end points   
         position: *list*
             A list store the pre-placed blocks
-
+    
     **Return**
 
         solution: *list*
@@ -600,7 +601,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
             The full grid in coordination
     '''
     Blocks = []
-    # extract the blank positions and replace them with blocks
+    # Wxtract the blank positions and replace them with blocks
     for a in grid:
         for b in a:
             if b == 'o':
@@ -611,19 +612,21 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
         Blocks[i] = 'B'
     for i in range((A_num + B_num), (A_num + B_num + C_num)):
         Blocks[i] = 'C'
-    # generate the permutations of blocks and blank postion
+    # Generate a list of permutations of blocks and blank postion
     list_Blocks = list(multiset_permutations(Blocks))
 
     while len(list_Blocks) != 0:
-        # Generate a board from grid function
         list_temp = list_Blocks[-1]
         list_temp_save = copy.deepcopy(list_temp)
         list_Blocks.pop()
+        # Generate a board from grid function
         ori_grid = Grid(grid)
-        test_board = ori_grid.gen_grid(list_temp, position)
+        test_board = ori_grid.gen_grid(list_temp,position)
+        # Test the board with obvs_judge and run it through Lazor to see if it is the right board
         if obvs_judge(lazorlist, test_board, list_Blocks, list_temp, holelist):
             lazor = Lazor(test_board, lazorlist, holelist)
             solution = lazor.lazor_path()
+            # We retunr 0 if the board is wrong and return a list with the path of lazors if its right.
             if solution != 0:
                 return solution, list_temp_save, test_board
             else:
@@ -631,18 +634,32 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
 
 
 def find_fixed_block(smallgrid):
+    '''
+    This function looks for blocks that were in the original board so that we wouldn't replace it when generating grids
+
+    **Parameters**
+
+        smallgrid: *list*
+            This is the orignial grid provided by the .bff file
+
+    **Return**
+
+        position: *list*
+            The coordination of the fixed blocks provided by the game
+
+    '''
     position = []
     for i in range(len(smallgrid)):
         for j in range(len(smallgrid[0])):
             block = smallgrid[i][j]
-            if block == 'A' or block == 'B' or block == 'C':
-                position.append([i*2+1, j*2+1])
+            if block == 'A' or block == 'B' or block=='C':
+                position.append([i*2+1,j*2+1])
     return position
 
 
 def solver(fptr):
     '''
-    This function gives every correct staffs
+    This function provides all the necessary parameters of the correct grid and generates a picture of the result 
 
     **Parameters**
 
@@ -659,6 +676,8 @@ def solver(fptr):
             The correct grid but every element in one list
     '''
 
+    # We read the .bff file and obatin the grid that we filled with 'x' for coordination, 
+    # the number of a,b,c, the original lasor list, the hole list and the original grid
     read = read_bff(fptr)
     grid = read[0]
     a = read[1]
@@ -667,19 +686,22 @@ def solver(fptr):
     lazorlist = read[4]
     holelist = read[5]
     smallgrid = read[6]
+    # We find out the coordination of blocks that are fixed
     position = find_fixed_block(smallgrid)
+    # We find out the lasor pathway and permutation of the correct grid
     answer, lazor = find_path(grid, a, b, c, lazorlist, holelist, position)[:2]
+    # We generate the orignial board filled with the correct lazor path
     good_list = copy.deepcopy(lazor)
     good_grid = copy.deepcopy(smallgrid)
     for row in range(len(good_grid)):
         for column in range(len(good_grid[0])):
             if good_grid[row][column] == 'o':
                 good_grid[row][column] = good_list.pop(0)
+    # We save and generate a picture for the solve
     save_answer_board(solved_board=good_grid, answer_lazor=answer, lazors_info=lazorlist,
                       holes=holelist, filename=fptr)
     answer_pic_name = '.'.join(fptr.split('.')[0:-1])
-    print('Success! The answer is saved as {}'. format(
-        answer_pic_name + '_solved.png'))
+    print('Success! The answer is saved as {}'. format(answer_pic_name + '_solved.png'))
     return(good_grid, answer, lazor)
 
 
