@@ -421,7 +421,7 @@ class Lazor(object):
     def lazor_path(self):
         '''
         This function can return a list of the lasers path
-        
+
         **Parameters**
 
             None
@@ -559,7 +559,7 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                 else:
                     return True
 
-    for jj in range(len(holelist)): # Ruling out grids that have blocks blocking a hole
+    for jj in range(len(holelist)):  # Ruling out grids that have blocks blocking a hole
         x_hole = holelist[jj][1]
         y_hole = holelist[jj][0]
         if ((gridfull_temp[x_hole][y_hole + 1] in ['A', 'B']) and (gridfull_temp[x_hole][y_hole - 1] in ['A', 'B'])) or \
@@ -590,7 +590,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
             The positions of the end points   
         position: *list*
             A list store the pre-placed blocks
-    
+
     **Return**
 
         solution: *list*
@@ -621,7 +621,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
         list_Blocks.pop()
         # Generate a board from grid function
         ori_grid = Grid(grid)
-        test_board = ori_grid.gen_grid(list_temp,position)
+        test_board = ori_grid.gen_grid(list_temp, position)
         # Test the board with obvs_judge and run it through Lazor to see if it is the right board
         if obvs_judge(lazorlist, test_board, list_Blocks, list_temp, holelist):
             lazor = Lazor(test_board, lazorlist, holelist)
@@ -652,8 +652,8 @@ def find_fixed_block(smallgrid):
     for i in range(len(smallgrid)):
         for j in range(len(smallgrid[0])):
             block = smallgrid[i][j]
-            if block == 'A' or block == 'B' or block=='C':
-                position.append([i*2+1,j*2+1])
+            if block == 'A' or block == 'B' or block == 'C':
+                position.append([i*2+1, j*2+1])
     return position
 
 
@@ -676,7 +676,7 @@ def solver(fptr):
             The correct grid but every element in one list
     '''
 
-    # We read the .bff file and obatin the grid that we filled with 'x' for coordination, 
+    # We read the .bff file and obatin the grid that we filled with 'x' for coordination,
     # the number of a,b,c, the original lasor list, the hole list and the original grid
     read = read_bff(fptr)
     grid = read[0]
@@ -701,7 +701,8 @@ def solver(fptr):
     save_answer_board(solved_board=good_grid, answer_lazor=answer, lazors_info=lazorlist,
                       holes=holelist, filename=fptr)
     answer_pic_name = '.'.join(fptr.split('.')[0:-1])
-    print('Success! The answer is saved as {}'. format(answer_pic_name + '_solved.png'))
+    print('Success! The answer is saved as {}'. format(
+        answer_pic_name + '_solved.png'))
     return(good_grid, answer, lazor)
 
 
