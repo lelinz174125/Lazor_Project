@@ -25,7 +25,7 @@ P 3 4
 P 7 4
 P 5 8
 ```
-The grid should be placed between **GRID STAR** and **GRID STOP**.  
+The grid should be placed between **GRID START** and **GRID STOP**.  
 **A**: Reflect block  
 **B**: Opaque block  
 **C**: Refract block  
@@ -33,13 +33,22 @@ The grid should be placed between **GRID STAR** and **GRID STOP**.
 **P**: The positions that lazers need to intersect.  
 
 ## How can this script help you solve the puzzle?
-Here, we take 'yarn_5' for example. The snapshot of this level is 
+Here, we take 'yarn_5' for example. The snapshot of this level is  
+
+
 <img width="405" height="866.25" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_origin.jpg>
 
-After running, you can get the answer picture named as 'yarn_5_solved.png', which looks like 
-<img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_solved.png>  
+After running, you can get the answer picture named as 'yarn_5_solved.png', which looks like   
+
+
+<img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_solved.png>   
+
+
 Or for level mad_1, the answer looks like:    
+
+
 <img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/mad_1_solved.png>  
+  
   
 **White Block**: Reflect block  
 **Black Block**: Opaque block  
