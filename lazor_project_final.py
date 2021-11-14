@@ -274,10 +274,7 @@ class Grid(object):
         self.length = len(origrid)
         self.width = len(origrid[0])
 
-    def __call__(self, origrid):
-        return origrid
-
-    def gen_grid(self, listgrid):
+    def gen_grid(self, listgrid,position):
         self.listgrid = listgrid
         '''
         This function can fill ABC block into the grid.
@@ -294,14 +291,12 @@ class Grid(object):
             grid: *list*
                 The grid with blocks filled in
         '''
-        listgrid_temp = copy.deepcopy(self.listgrid)
-        grid_temp = copy.deepcopy(self.origrid)
         for row in range(len(self.origrid)):
             for column in range(len(self.origrid[0])):
-                if grid_temp[row][column] == 'o':
-                    grid_temp[row][column] = listgrid_temp.pop(0)
-
-        return grid_temp
+                if [row,column] not in position:
+                    if self.origrid[row][column] != 'x':
+                        self.origrid[row][column] = listgrid.pop(0)
+        return self.origrid
 
 
 class Lazor(object):
@@ -483,12 +478,13 @@ class Lazor(object):
                     else:
                         print('Wrong')
         if len(result) == len(self.holelist):
+            # print(lazorlist)
             return lazorlist
         else:
             return 0
 
 
-def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
+def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
     '''
     Generate a possible grid with blocks filled in
 
@@ -537,7 +533,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         list_temp_save = copy.deepcopy(list_temp)
         list_Blocks.pop()
         ori_grid = Grid(grid)
-        test_board = ori_grid.gen_grid(list_temp)
+        test_board = ori_grid.gen_grid(list_temp,position)
         lazor = Lazor(test_board, lazorlist, holelist)
         solution = lazor.lazor_path()
         if solution != 0:
@@ -545,10 +541,19 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist):
         else:
             continue
 
+def find_fixed_block(smallgrid):
+    position = [[0]]
+    for i in range(len(smallgrid)):
+        for j in range(len(smallgrid[0])):
+            block = smallgrid[i][j]
+            if block == 'A' or block == 'B' or block=='C':
+                position.append([i*2+1,j*2+1])
+    return position
 
 def solver(fptr):
     '''
-    This function gives every correct staffs
+    Thi
+    s function gives every correct staffs
 
     **Parameters**
 
@@ -573,7 +578,8 @@ def solver(fptr):
     lazorlist = read[4]
     holelist = read[5]
     smallgrid = read[6]
-    answer, lazor = find_path(grid, a, b, c, lazorlist, holelist)[:2]
+    position = find_fixed_block(smallgrid)
+    answer, lazor = find_path(grid, a, b, c, lazorlist, holelist, position)[:2]
     good_list = copy.deepcopy(lazor)
     good_grid = copy.deepcopy(smallgrid)
     for row in range(len(good_grid)):
