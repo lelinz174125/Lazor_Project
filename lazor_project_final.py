@@ -541,8 +541,9 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
         else:
             continue
 
+
 def find_fixed_block(smallgrid):
-    position = [[0]]
+    position = []
     for i in range(len(smallgrid)):
         for j in range(len(smallgrid[0])):
             block = smallgrid[i][j]
@@ -550,10 +551,10 @@ def find_fixed_block(smallgrid):
                 position.append([i*2+1,j*2+1])
     return position
 
+
 def solver(fptr):
     '''
-    Thi
-    s function gives every correct staffs
+    This function gives every correct staffs
 
     **Parameters**
 
@@ -595,14 +596,13 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
-    # solver('yarn_5.bff')
-    # solver('dark_1.bff')
-    # solver('mad_1.bff')
-    # solver('mad_4.bff')
+    solver('dark_1.bff')
+    solver('mad_1.bff')
+    solver('mad_4.bff')
     solver('mad_7.bff')
-    # solver('numbered_6.bff')
-    # solver('showstopper_4.bff')
-    # solver('tiny_5.bff')
-    # solver('yarn_5.bff')
+    solver('numbered_6.bff')
+    solver('showstopper_4.bff')
+    solver('tiny_5.bff')
+    solver('yarn_5.bff')
     t1 = time.time()
     print(t1 - t0)
