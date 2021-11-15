@@ -1,12 +1,3 @@
-'''
-Author: Bo Chao, Mingze Zheng, Lelin Zhong 
-Bo Chao contributed most to the main idea
-Mingze Zheng finished the read_bff function
-Lelin Zhong finished the save_answer_board and get color function
-We cooperated to finish the rest of the project.
-'''
-
-
 from PIL import Image, ImageDraw
 from sympy.utilities.iterables import multiset_permutations
 import copy
@@ -189,7 +180,7 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
     '''
     The idea of the code comes from the maze lab of the software carpentry class.
     This function is to save the solved board as "filename_solved.png"
-    
+
     **Parameters**
 
         solved_board: *list*
@@ -315,7 +306,7 @@ class Grid(object):
                     if self.origrid[row][column] != 'x':
                         self.origrid[row][column] = listgrid.pop(0)
         return self.origrid
-    
+
 
 class Lazor(object):
     '''
@@ -330,6 +321,7 @@ class Lazor(object):
         holelist : *list*
             A list of list stand for the position of the end point or the hole 
     '''
+
     def __init__(self, grid, lazorlist, holelist):
         self.grid = grid
         self.lazorlist = lazorlist
@@ -546,7 +538,6 @@ def obvs_judge(gridfull_temp, possible_list, list_temp, holelist):
         y_hole = holelist[jj][0]
         if ((gridfull_temp[x_hole][y_hole + 1] in ['A', 'B']) and (gridfull_temp[x_hole][y_hole - 1] in ['A', 'B'])) or \
                 ((gridfull_temp[x_hole + 1][y_hole] in ['A', 'B']) and (gridfull_temp[x_hole - 1][y_hole] in ['A', 'B'])):
-            possible_list.remove(list_temp)
             return False
         else:
             return True
