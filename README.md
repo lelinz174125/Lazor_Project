@@ -64,7 +64,7 @@ And for 'mad_1', the answer looks like:
 ## Fastest results?
 This script can solve puzzles ***really*** fast. 
 The time for solving this puzzles with Apple M1 (8 cores,RAM 16GB) is around 11 seconds for all eight given grid.
-<img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/mad_1_solved.png>  
+<img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/time_test.jpeg>  
   
 
 ## Contributors
