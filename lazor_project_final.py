@@ -514,9 +514,6 @@ def obvs_judge(gridfull_temp, possible_list, list_temp, holelist):
 
     **Parameters**
 
-        lazorlist: *list*
-            The list contains all the lasers. 
-
         gridfull_temp: *list*
             The grid about to be solved
 
