@@ -66,7 +66,7 @@ This script can solve puzzles ***really*** fast.
 The time for solving for all eight given puzzles with Apple M1 (8 cores,RAM 16GB) 
 is around ***11*** seconds.
 
-<img width="375" height="800" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/time_test.jpeg>  
+<img width="375" height="120" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/time_test.jpeg>  
   
 
 ## Contributors
