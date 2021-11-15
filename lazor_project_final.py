@@ -15,7 +15,7 @@ def read_bff(file_name):
 
     **Return**
 
-        tuple: *list, int, int, int, list, list*
+        tuple: *list, int, int, int, list, list，list*
             Elements in the tuple are as follow:
                 grid_full: *list*
                     The full grid in the form of a coordinate system
@@ -26,7 +26,8 @@ def read_bff(file_name):
                 C_num: *int*
                     The number of C-block available
                 L_list: *list*
-                    The first two elements is the positon of the start point, the last two elements are the direction.
+                    The first two elements is the positon of the start point of the 
+                    lazor, the last two elements are the direction of the lazor
                 P_list: *list*
                     The positions of the end points
                 grid_origin: *list*
@@ -151,6 +152,7 @@ def read_bff(file_name):
 
 def get_colors():
     '''
+    The idea of the code comes from the maze lab of the software carpentry class.
     Colors map that the lazor board will use:
         0 - BlackGray - The background
         A - White - A reflect block
@@ -162,8 +164,7 @@ def get_colors():
     **Returns**
 
         color_map: *dict, int, tuple*
-            A dictionary that will correlate the integer key to
-            a color.
+            A dictionary that will correlate the integer key to a color.
     '''
     return {
         0: (20, 20, 20),
@@ -177,26 +178,23 @@ def get_colors():
 
 def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, blockSize=100):
     '''
-    This function is to save the unsolved and solved board.
-    "filename_board.png" and "filename_solved.png"
     The idea of the code comes from the maze lab of the software carpentry class.
-
+    This function is to save the solved board as "filename_solved.png"
+    
     **Parameters**
 
         solved_board: *list*
             The solved grid
         answer_lazor: *list*
             The coordinations that lasers passed by
-        filename: *str
-            The name of the file
         lazors_info: *list*
-            Consisting of all origins and directions of the lazors
+            The original positions and directions of the lazors
         holes: *list*
-            Consisiting of the hole points
-        stack_lazors: *list*
-            Consisting of the lazor path for each lazor
+            The position of the hole points 
+        filename: *str*
+            The name of the file
         blocksize: *int*
-            Size of the blocks of the board
+            The size of the blocks of the board
 
     ** Returns **
 
@@ -271,6 +269,13 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
 
 
 class Grid(object):
+    '''
+        This class can generate various grids 
+
+        grid : *list*
+            A list of list stand for a possible grid of the solution
+    '''
+
 
     def __init__(self, origrid):
         self.origrid = origrid
@@ -279,18 +284,18 @@ class Grid(object):
 
     def gen_grid(self, listgrid, position):
         '''
-        This function can fill ABC block into the grid.
+        This function aim to put 'A', 'B' or 'C' block into the grid
 
         **Parameters**
 
-            grid: *list*
-                The full grid
-            list_temp: *str*
-                One possible arrangement
+            listgrid: *list*
+                The grid that have the same length and width with the original grid
+            position: *list*
+                One possible arrangement for putting the blocks
 
         **Return**
 
-            grid: *list*
+            self.origrid: *list*
                 The grid with blocks filled in
         '''
         self.listgrid = listgrid
@@ -303,7 +308,10 @@ class Grid(object):
 
 
 class Lazor(object):
-
+    '''
+        grid : *list*
+            A list of list stand for a possible solution of the game
+    '''
     def __init__(self, grid, lazorlist, holelist):
         self.grid = grid
         self.lazorlist = lazorlist
@@ -311,22 +319,20 @@ class Lazor(object):
 
     def meet_block(self, point, direction):
         '''
-        If the laser is not currently at the boundary, this function will check whether 
-        the laser interacts with a block and returns the new direction of the laser
+        This function will check whether the lasor encounter a functional block 
+        and returns the new direction of the lasor
 
         **Parameters**
 
-            grid : *list*
-                A list of list stand for a possible solution of the game
             point: *tuple*
-                The current lazor point
-            dirc: *tuple*
+                The current lazor position
+            direction: *tuple*
                 The current direction of lazor
 
         **Return**
 
-            new_dir: *list*
-                A list that includes new directions of lazor
+            new_direction: *list*
+                A list that includes new directions of lazor after meeting functional block
         '''
         self.point = point
         self.direction = direction
@@ -336,16 +342,16 @@ class Lazor(object):
         # Obtain the block laser touches
         if point[0] & 1 == 1:
             block_type = self.grid[y1][x1]
-            new_direction = self.new_dir(block_type)
+            new_direction = self.block(block_type)
         if point[0] & 1 == 0:
             block_type = self.grid[y2][x2]
-            new_direction = self.new_dir(block_type)
+            new_direction = self.block(block_type)
 
         return new_direction
 
-    def new_dir(self, block_type):
+    def block(self, block_type):
         '''
-        This function is to achieve the role of different blocks
+        This function is to identify the function of different blocks
 
         **Parameters**
 
@@ -355,24 +361,25 @@ class Lazor(object):
                 'B': Opaque block
                 'C': Refract block
                 'o': Blank space
+                'x': unavailable space
 
-        **Return
+        **Return**
 
             new_direction: *list*
-                The new direction lasers head after meet a block
+                The new direction of lasors
         '''
         self.type = block_type
         new_direction = []
-        # When lasers touches the reflect block
+        # When lasors touch the reflect block
         if self.type == 'A':
             if self.point[0] & 1 == 0:
                 new_direction = [self.direction[0] * (-1), self.direction[1]]
             else:
                 new_direction = [self.direction[0], self.direction[1] * (-1)]
-        # When lasers touches the opaque block
+        # When lasors touch the opaque block
         elif self.type == 'B':
             new_direction = []
-        # When lasers touches the refract block
+        # When lasors touch the refract block
         elif self.type == 'C':
             if self.point[0] & 1 == 0:
                 new_direction = [self.direction[0], self.direction[1],
@@ -380,7 +387,7 @@ class Lazor(object):
             else:
                 new_direction = [self.direction[0], self.direction[1],
                                  self.direction[0], self.direction[1] * (-1)]
-        # When lasers touches the blank space
+        # When lasors touch the blank space
         elif self.type == 'o' or self.type == 'x':
             new_direction = self.direction
 
@@ -393,16 +400,14 @@ class Lazor(object):
 
         **Parameters:**
 
-            grid:*list*
-                Contains a list of lists that can represent the grid
-            laz_co:*tuple*
-                Contains the current coordinate of the lazer point
+            laz_co:*list*
+                The current coordination of the lazor point
             direction:*list*
-                Contains the direction of the newest lazer
+                The direction of the newest lazor
 
         **Returns**
-
-            True if the lazer is still in the grid
+            *bool*
+                True if the lazor is still in the grid
         '''
         width = len(self.grid[0])
         length = len(self.grid)
@@ -420,7 +425,7 @@ class Lazor(object):
 
     def lazor_path(self):
         '''
-        This function can return a list of the lasers path
+        This function can return a list of the lasors path
 
         **Parameters**
 
@@ -429,7 +434,7 @@ class Lazor(object):
         **Return**
 
             lazorlist: *list*
-                A list contains the positions lasers passed
+                A list contains lasors path
         '''
         result = []
         lazorlist = []
@@ -495,7 +500,7 @@ class Lazor(object):
 
 def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
     '''
-    This function can skip some obviously wrong grids generated
+    This function can skip some obveriously wrong solution
 
     **Parameters**
 
@@ -519,10 +524,9 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
         None
     '''
 
-    # Any laser or hole that is surrounded by 'A' or 'B' blocks can not have a result , thus we
-    # rule them out
+    # Any laser or hole that is surrounded by 'A' or 'B' blocks can not have a result , thus we skip those grid
     for ii in range(len(lazorlist)):
-        if int(lazorlist[ii][1]) % 2 == 1:  # Suitable for blocks blocking left&right
+        if int(lazorlist[ii][1]) % 2 == 1:  # Suitable for blocks blocking left & right
             x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
             if x_temp > 0 and x_temp != len(gridfull_temp[0])-1:
                 if gridfull_temp[y_temp][x_temp - 1] and gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
@@ -540,7 +544,7 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
                 else:
                     return True
 
-        if int(lazorlist[ii][1]) % 2 == 0:  # Suitable for blocks blocking up&down
+        if int(lazorlist[ii][1]) % 2 == 0:  # Suitable for blocks blocking up & down
             x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
             if y_temp > 0 and y_temp != len(gridfull_temp)-1:
                 if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
@@ -635,7 +639,8 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
 
 def find_fixed_block(smallgrid):
     '''
-    This function looks for blocks that were in the original board so that we wouldn't replace it when generating grids
+    This function looks for blocks that were in the original board 
+    so that we wouldn't replace it when generating grids
 
     **Parameters**
 
@@ -659,7 +664,8 @@ def find_fixed_block(smallgrid):
 
 def solver(fptr):
     '''
-    This function provides all the necessary parameters of the correct grid and generates a picture of the result 
+    This function provides all the necessary parameters of the correct grid 
+    and generates a picture of the result 
 
     **Parameters**
 
