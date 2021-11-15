@@ -270,12 +270,13 @@ def save_answer_board(solved_board, answer_lazor, lazors_info, holes, filename, 
 
 class Grid(object):
     '''
-        This class can generate various grids 
+    This Function class is a wrapper for generating various grids  
+
+    **Parameters**
 
         grid : *list*
             A list of list stand for a possible grid of the solution
     '''
-
 
     def __init__(self, origrid):
         self.origrid = origrid
@@ -305,49 +306,25 @@ class Grid(object):
                     if self.origrid[row][column] != 'x':
                         self.origrid[row][column] = listgrid.pop(0)
         return self.origrid
-
+    
 
 class Lazor(object):
     '''
+    This Function class is a wrapper for identifying right grid and return a lazor path  
+
+    **Parameters**
+
         grid : *list*
-            A list of list stand for a possible solution of the game
+            A list of list stand for a possible grid of the solution
+        lazorlist : *list*
+            A list of list stand for start point and direction of lazor 
+        holelist : *list*
+            A list of list stand for the position of the end point or the hole 
     '''
     def __init__(self, grid, lazorlist, holelist):
         self.grid = grid
         self.lazorlist = lazorlist
         self.holelist = holelist
-
-    def meet_block(self, point, direction):
-        '''
-        This function will check whether the lasor encounter a functional block 
-        and returns the new direction of the lasor
-
-        **Parameters**
-
-            point: *tuple*
-                The current lazor position
-            direction: *tuple*
-                The current direction of lazor
-
-        **Return**
-
-            new_direction: *list*
-                A list that includes new directions of lazor after meeting functional block
-        '''
-        self.point = point
-        self.direction = direction
-        # Calculate the next position of the laser
-        x1, y1 = point[0], point[1] + direction[1]
-        x2, y2 = point[0] + direction[0], point[1]
-        # Obtain the block laser touches
-        if point[0] & 1 == 1:
-            block_type = self.grid[y1][x1]
-            new_direction = self.block(block_type)
-        if point[0] & 1 == 0:
-            block_type = self.grid[y2][x2]
-            new_direction = self.block(block_type)
-
-        return new_direction
 
     def block(self, block_type):
         '''
@@ -390,6 +367,38 @@ class Lazor(object):
         # When lasors touch the blank space
         elif self.type == 'o' or self.type == 'x':
             new_direction = self.direction
+
+        return new_direction
+
+    def meet_block(self, point, direction):
+        '''
+        This function will check whether the lasor encounter a functional block 
+        and returns the new direction of the lasor
+
+        **Parameters**
+
+            point: *list*
+                The current lazor position
+            direction: *list*
+                The current direction of lazor
+
+        **Return**
+
+            new_direction: *list*
+                A list that includes new directions of lazor after meeting functional block
+        '''
+        self.point = point
+        self.direction = direction
+        # Calculate the next position of the laser
+        x1, y1 = point[0], point[1] + direction[1]
+        x2, y2 = point[0] + direction[0], point[1]
+        # Obtain the block laser touches
+        if point[0] & 1 == 1:
+            block_type = self.grid[y1][x1]
+            new_direction = self.block(block_type)
+        if point[0] & 1 == 0:
+            block_type = self.grid[y2][x2]
+            new_direction = self.block(block_type)
 
         return new_direction
 
@@ -580,7 +589,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
 
     **Parameters**
 
-        Grid: *list*
+        grid: *list*
             The full grid in the form of a coordinate system
         A_num: *int*
             The number of A-block available
@@ -651,7 +660,6 @@ def find_fixed_block(smallgrid):
 
         position: *list*
             The coordination of the fixed blocks provided by the game
-
     '''
     position = []
     for i in range(len(smallgrid)):
@@ -675,9 +683,9 @@ def solver(fptr):
     **Return**
 
         good_grid: *list*
-            The correct grid
+            A list represents for a correct grid
         answer: *list*
-            A list contains all the position lasers passed and the direction they head
+            A list contains all the information of lasor path
         lazor: *list*
             The correct grid but every element in one list
     '''
