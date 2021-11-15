@@ -1,3 +1,12 @@
+'''
+Author: Bo Chao, Mingze Zheng, Lelin Zhong 
+Bo Chao contributed most to the main idea
+Mingze Zheng finished the read_bff function
+Lelin Zhong finished the save_answer_board and get color function
+We cooperated to finish the rest of the project.
+'''
+
+
 from PIL import Image, ImageDraw
 from sympy.utilities.iterables import multiset_permutations
 import copy
@@ -722,12 +731,12 @@ def solver(fptr):
 
 if __name__ == "__main__":
     t0 = time.time()
-    # solver('dark_1.bff')
-    # solver('mad_1.bff')
-    # solver('mad_4.bff')
-    # solver('numbered_6.bff')
-    # solver('showstopper_4.bff')
-    # solver('tiny_5.bff')
+    solver('dark_1.bff')
+    solver('mad_1.bff')
+    solver('mad_4.bff')
+    solver('numbered_6.bff')
+    solver('showstopper_4.bff')
+    solver('tiny_5.bff')
     solver('mad_7.bff')
     t1 = time.time()
     print(t1 - t0)

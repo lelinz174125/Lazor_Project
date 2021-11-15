@@ -34,7 +34,8 @@ The grid should be placed between **GRID START** and **GRID STOP**.
 
 ## How can this script help you solve the puzzle?
 This script can solve puzzles ***really*** fast.  
-Here, we take 'yarn_5' for example. The snapshot of this level is  
+Here, we take 'yarn_5' and 'mad_1' for example. 
+The snapshot of 'yarn_5' is  
 
 
 <img width="375" height="802.08" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_origin.jpg>
@@ -45,7 +46,7 @@ After running, you can get the answer picture named as 'yarn_5_solved.png', whic
 <img width="375" height="450" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/yarn_5_solved.png>   
 
 
-Or for level mad_1, the answer looks like:    
+And for 'mad_1', the answer looks like:    
 
 
 <img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/mad_1_solved.png>  
@@ -60,6 +61,11 @@ Or for level mad_1, the answer looks like:
 **Solid Red Circle**: The place where the laser is emitted.  
 **Red Line**: The optical path of the laser.  
 
+## Fastest results?
+This script can solve puzzles ***really*** fast. 
+The time for solving this puzzles with Apple M1 (8 cores,RAM 16GB) is around 11 seconds for all eight given grid.
+<img width="375" height="375" src=https://github.com/lelinz174125/Lazor_Project/blob/main/IMG/mad_1_solved.png>  
+  
 
 ## Contributors
 This project exists thanks to all the people who contribute.  
