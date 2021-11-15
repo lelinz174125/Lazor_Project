@@ -516,7 +516,7 @@ class Lazor(object):
             return 0
 
 
-def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
+def obvs_judge(gridfull_temp, possible_list, list_temp, holelist):
     '''
     This function can skip some obveriously wrong solution
 
@@ -541,46 +541,6 @@ def obvs_judge(lazorlist, gridfull_temp, possible_list, list_temp, holelist):
 
         None
     '''
-
-    # Any laser or hole that is surrounded by 'A' or 'B' blocks can not have a result , thus we skip those grid
-    for ii in range(len(lazorlist)):
-        if int(lazorlist[ii][1]) % 2 == 1:  # Suitable for blocks blocking left & right
-            x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
-            if x_temp > 0 and x_temp != len(gridfull_temp[0])-1:
-                if gridfull_temp[y_temp][x_temp - 1] and gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
-                    return False
-                else:
-                    return True
-            if x_temp == 0:
-                if gridfull_temp[y_temp][x_temp + 1] in ['A', 'B']:
-                    return False
-                else:
-                    return True
-            if x_temp == len(gridfull_temp[0])-1:
-                if gridfull_temp[y_temp][x_temp - 1] in ['A', 'B']:
-                    return False
-                else:
-                    return True
-
-        if int(lazorlist[ii][1]) % 2 == 0:  # Suitable for blocks blocking up & down
-            x_temp, y_temp = lazorlist[ii][0], lazorlist[ii][1]
-            if y_temp > 0 and y_temp != len(gridfull_temp)-1:
-                if gridfull_temp[y_temp - 1][x_temp] and gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
-                    return False
-                else:
-                    return True
-            if y_temp == 0:
-                if gridfull_temp[y_temp + 1][x_temp] in ['A', 'B']:
-                    return False
-                else:
-                    return True
-
-            if y_temp == len(gridfull_temp) - 1:
-                if gridfull_temp[y_temp - 1][x_temp] in ['A', 'B']:
-                    return False
-                else:
-                    return True
-
     for jj in range(len(holelist)):  # Ruling out grids that have blocks blocking a hole
         x_hole = holelist[jj][1]
         y_hole = holelist[jj][0]
@@ -645,7 +605,7 @@ def find_path(grid, A_num, B_num, C_num, lazorlist, holelist, position):
         ori_grid = Grid(grid)
         test_board = ori_grid.gen_grid(list_temp, position)
         # Test the board with obvs_judge and run it through Lazor to see if it is the right board
-        if obvs_judge(lazorlist, test_board, list_Blocks, list_temp, holelist):
+        if obvs_judge(test_board, list_Blocks, list_temp, holelist):
             lazor = Lazor(test_board, lazorlist, holelist)
             solution = lazor.lazor_path()
             # We retunr 0 if the board is wrong and return a list with the path of lazors if its right.
