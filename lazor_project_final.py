@@ -338,6 +338,7 @@ class Lazor(object):
                 'A': Reflect block
                 'B': Opaque block
                 'C': Refract block
+                'D': Crstal block
                 'o': Blank space
                 'x': unavailable space
 
@@ -365,8 +366,15 @@ class Lazor(object):
             else:
                 new_direction = [self.direction[0], self.direction[1],
                                  self.direction[0], self.direction[1] * (-1)]
+        elif self.type == 'D':
+            if self.point[0] & 1 == 0:
+                new_direction = [2, 0,
+                                 self.direction[0], self.direction[1]]
+            else:
+                new_direction = [0, 2,
+                                 self.direction[0], self.direction[1]]
         # When lasors touch the blank space
-        elif self.type == 'o' or self.type == 'x':
+        elif self.type == 'o' or self.type == 'x' :
             new_direction = self.direction
 
         return new_direction
@@ -488,18 +496,21 @@ class Lazor(object):
                     # If there are 4 elements, it is C block, we seperate them and add the straight line to a new list in lazor list,
                     # and the other to the list under the original lazor
                     elif len(next_step) == 4:
-                        direction = next_step
-                        coordination_newlaz1 = [
-                            coordination[0] + direction[0], coordination[1] + direction[1]]
-                        coordination_newlaz2 = [
-                            coordination[0], coordination[1]]
-                        lazorlist.append(
-                            [[coordination_newlaz1[0], coordination_newlaz1[1], direction[0], direction[1]]])
-                        lazorlist[k].append(
-                            [coordination_newlaz2[0], coordination_newlaz2[1], direction[2], direction[3]])
-                        coordination = coordination_newlaz2
-                        if (coordination in self.holelist) and (coordination not in result):
-                            result.append(coordination)
+                        if next_step[0] == 0 or 2:
+                            direction = next_step
+                        else:
+                            direction = next_step
+                            coordination_newlaz1 = [
+                                coordination[0] + direction[0], coordination[1] + direction[1]]
+                            coordination_newlaz2 = [
+                                coordination[0], coordination[1]]
+                            lazorlist.append(
+                                [[coordination_newlaz1[0], coordination_newlaz1[1], direction[0], direction[1]]])
+                            lazorlist[k].append(
+                                [coordination_newlaz2[0], coordination_newlaz2[1], direction[2], direction[3]])
+                            coordination = coordination_newlaz2
+                            if (coordination in self.holelist) and (coordination not in result):
+                                result.append(coordination)
                     else:
                         print('Wrong')
         if len(result) == len(self.holelist):
