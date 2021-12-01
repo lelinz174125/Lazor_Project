@@ -366,6 +366,7 @@ class Lazor(object):
             else:
                 new_direction = [self.direction[0], self.direction[1],
                                  self.direction[0], self.direction[1] * (-1)]
+        # When lasors touch the crystal block
         elif self.type == 'D':
             if self.point[0] & 1 == 0:
                 new_direction = [2, 0,
@@ -493,11 +494,17 @@ class Lazor(object):
                             [coordination[0], coordination[1], direction[0], direction[1]])
                         if (coordination in self.holelist) and (coordination not in result):
                             result.append(coordination)
-                    # If there are 4 elements, it is C block, we seperate them and add the straight line to a new list in lazor list,
+                    # If there are 4 elements, it is C block or D block, we seperate them and add the straight line to a new list in lazor list,
                     # and the other to the list under the original lazor
                     elif len(next_step) == 4:
-                        if next_step[0] == 0 or 2:
+                        if next_step[0] == 0 or next_step[0] == 2:
                             direction = next_step
+                            coordination = [
+                            coordination[0] + direction[0], coordination[1] + direction[1]]
+                            lazorlist[k].append(
+                                [coordination[0], coordination[1], direction[2], direction[3]])
+                            if (coordination in self.holelist) and (coordination not in result):
+                                result.append(coordination)
                         else:
                             direction = next_step
                             coordination_newlaz1 = [
